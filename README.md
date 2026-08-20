@@ -2,7 +2,7 @@
 
 **AI skill for smart buying in India.** Find the best-value product (not just the cheapest), verify the deal is real, find the cheapest way to pay, and keep the whole thing tracked - from first hunt to the warranty claim two years later.
 
-Works with any agent that supports skills (Claude Code, Claude.ai, Codex, opencode, and other Agent Skills-compatible tools).
+Works with any AI agent that supports skills (Agent Skills-compatible tools).
 
 ---
 
@@ -44,22 +44,14 @@ Verdicts are exactly one of: **Buy now / Wait for sale / Pick alternative / Don'
 
 ## Install
 
-The skill is a folder with a `SKILL.md` - copy it into your agent's skills directory (or upload the zip):
+The skill is a folder with a `SKILL.md` — copy it into your agent's skills directory (or upload the zip):
 
-**Claude Code**
 ```bash
-git clone https://github.com/<your-user>/deal-hunter.git
-mkdir -p ~/.claude/skills
-cp -r deal-hunter ~/.claude/skills/
+git clone https://github.com/johnsstalk/deal-hunter.git
+cp -r deal-hunter /path/to/your-agent/skills/
 ```
 
-**Codex / opencode / other Agent Skills tools**
-```bash
-mkdir -p "$CODEX_HOME/skills"        # or the tool's own skills directory
-cp -r deal-hunter "$CODEX_HOME/skills/"
-```
-
-**Claude.ai** - download the latest `.skill` zip from **Releases**, then upload it in Settings → Capabilities → Skills. The zip contains the `deal-hunter/` folder at its root, as required.
+Or download the latest `.skill` zip from **Releases** and upload it through your agent's interface.
 
 > Install only from trusted sources, and audit the bundled files before use.
 
