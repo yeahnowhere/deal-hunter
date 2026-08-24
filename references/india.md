@@ -7,17 +7,17 @@ Load this file for **any purchase in the Indian market** or when the user is an 
 
 ## 1. Platform Map (which platform for what)
 
-| Category | Primary | Also check | Notes |
-|---|---|---|---|
-| Electronics / phones | Amazon.in, Flipkart | Croma, Reliance Digital, Tata Neu, brand sites | Deepest drops at festive sales; compare the same model across Amazon vs Flipkart |
-| Refurbished phones/electronics | Cashify, Amazon Renewed, Flipkart Refurbished | brand certified-refurb stores | Refurb ≠ new: check grading, refurb warranty term, battery health |
-| Second-hand | OLX, Quikr, Facebook Marketplace | local market groups | Meet & inspect in person; never pay an advance to "hold" |
-| Fashion | Myntra, Ajio | Tata Neu, Nykaa (beauty), Meesho | Seasonal clearances hit 50–80%; check return window |
-| Everyday value / home & lifestyle | Meesho | Meesho Mall (branded), Meesho Lite | Zero-commission sellers = the cheapest tier; check seller age/rating + return window; groceries live in select cities |
-| Groceries & daily | Blinkit, Zepto, Instamart, JioMart, DMart, BigBasket | local kirana | Different logic: offer caps, subscription fees, per-unit price |
-| Health / pharma | 1mg, PharmEasy, Netmeds | — | Check expiry dates + seller licence |
-| Appliances | Amazon.in, Flipkart, Croma, Reliance Digital | Tata Neu, brand sites | BEE star rating (energy), capacity, Flipkart Trust Shield |
-| Coupon/cashback layer | CashKaro, CouponDunia, GrabOn | SBI/ICICI/HDFC offer pages | Extra % back on top of platform offers — verify still live |
+| Category                          | Primary                                                            | Also check                                     | Notes                                                                                                                 |
+| --------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Electronics / phones              | Amazon.in, Flipkart                                                | Croma, Reliance Digital, Tata Neu, brand sites | Deepest drops at festive sales; compare the same model across Amazon vs Flipkart                                      |
+| Refurbished phones/electronics    | Cashify, Amazon Renewed, Flipkart Refurbished                      | brand certified-refurb stores                  | Refurb ≠ new: check grading, refurb warranty term, battery health                                                     |
+| Second-hand                       | OLX, Facebook Marketplace                                   | Quikr (alive but low-signal — free listings get buried), local market groups                            | Meet & inspect in person; never pay an advance to "hold"                                                              |
+| Fashion                           | Myntra, Ajio                                                       | Tata Neu, Nykaa (beauty), Meesho               | Seasonal clearances hit 50–80%; check return window                                                                   |
+| Everyday value / home & lifestyle | Meesho                                                             | Meesho Mall (branded), Meesho Lite             | Zero-commission sellers = the cheapest tier; check seller age/rating + return window; groceries live in select cities |
+| Groceries & daily                 | Blinkit, Zepto, Instamart, JioMart, DMart, BigBasket, Amazon Fresh | local kirana                                   | Different logic: offer caps, subscription fees, per-unit price                                                        |
+| Health / pharma                   | 1mg, PharmEasy, Netmeds                                            | —                                              | Check expiry dates + seller licence                                                                                   |
+| Appliances                        | Amazon.in, Flipkart, Croma, Reliance Digital                       | Tata Neu, brand sites                          | BEE star rating (energy), capacity, Flipkart Trust Shield                                                             |
+| Coupon/cashback layer             | CashKaro, CouponDunia, GrabOn                                      | SBI/ICICI/HDFC offer pages                     | Extra % back on top of platform offers — verify still live                                                            |
 
 ## 2. India Sale Calendar 2026
 
@@ -81,17 +81,18 @@ Load this file for **any purchase in the Indian market** or when the user is an 
 ## 6. Scam & Safety (India-specific)
 
 - **Fake seller clones** — listings mimicking brand/authorized pages at lower prices; check seller name, age, rating, return rate.
-- **Counterfeits** — rampant in headphones, chargers, cosmetics, fashion; "genuine product" badges aren't proof — check seller + invoice + seal.
+- **Counterfeits** — rampant in headphones, chargers, cosmetics, fashion; "genuine product" badges aren't proof — check seller + invoice + seal + the **BIS/ISI certification mark** (mandatory for chargers, electronics, cosmetics; fakes often skip or forge it — verify the licence number on the BIS portal when in doubt).
 - **Refurbished sold as new** — verify the listing state explicitly; a "new" price on a refurb unit is overpricing.
 - **Prepaid vs COD** — unknown seller + prepaid = risk; COD with open-box inspection is safer for first buys. Balance against card offers that often exclude COD.
 - **UPI/OTP scams** — never share OTPs, "payment failed — resend" links, or screen-share with "customer support". Real refunds never require the customer to "activate" anything.
+- **Community scam checks** — r/IsThisAScamIndia documents Indian scam vectors, payment-gateway anomalies, and malicious storefronts; search the seller/platform/offer there before any prepaid order to an unknown seller.
 - **Paid review farms** — bursts of 5-star reviews + generic text + recent accounts = manipulation flag; verified-purchase is weaker on some platforms, so check date spread and video/photo reviews.
 
 ## 7. Category Cheat-Sheets
 
 - **Phones** — SoC + RAM/ROM, camera sensor (not megapixel count), software-update commitment (years), battery, 5G band support, build; for refurb check battery health + warranty.
 - **Laptops** — CPU generation (not just model name), RAM soldered vs upgradeable, SSD type/expandability, display (panel, resolution, refresh), build/hinge, India service network.
-- **Appliances** — **BEE star rating** (energy cost over life), capacity vs household, inverter compressor (AC/fridge), noise, Trust Shield (Flipkart), installation charges, warranty term.
+- **Appliances** — **BEE star rating** (energy cost over life), capacity vs household, inverter compressor (AC/fridge), noise, Trust Shield (Flipkart), installation charges, warranty term, and **brand service/installation availability at the buyer's pincode** (service networks vary wildly by city — an online-only brand with no local ASC is a repair trap).
 - **Groceries** — **Legal Metrology Act**: MRP printed on packaged goods is a legal cap — never pay more; compare per-unit (per kg/litre) across apps; check mfg/expiry dates; watch subscription/fulfilment fees.
 - **Fashion** — fabric content, sizing fit (read reviews for size), return window, sale-season vs real price (Myntra/Ajio inflate MRP before clearances).
 
@@ -100,6 +101,7 @@ Load this file for **any purchase in the Indian market** or when the user is an 
 - **Keepa** — full Amazon.in price history (extension + site); best for Amazon.
 - **camelcamelcamel** — Amazon-only, simpler.
 - **Flipkart trackers** — pricehistory.in and similar; less reliable — cross-check with the sale calendar.
+- **DesiDime forums** — deal community cross-verifies true price history and bank-offer stacking; a good second signal for "is this actually a deal".
 - Rule: "X% off MRP" means nothing; compare to the product's typical/90-day price.
 
 ## 9. Dynamic & Surveillance Pricing (check before you trust a price)

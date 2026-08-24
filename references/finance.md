@@ -14,9 +14,9 @@ Before researching financing, confirm what the user can actually pay with:
 - Cash available (and how much they want to keep liquid — this powers split payments)
 - Credit cards: which bank + network (Visa / Mastercard / RuPay / Amex) — network-specific offers differ
 - Debit cards: which bank (e.g. HDFC/ICICI debit cards often get no-cost EMI)
-- EMI card / line: Bajaj Finserv, Instacred, ZestMoney, or bank EMI on a credit card
+- EMI card / line: Bajaj Finserv, Instacred, Snapmint, or bank EMI on a credit card; pay-later/BNPL apps: Simpl, LazyPay, Amazon Pay Later, Axio (ZestMoney shut down Dec 2023 — do not recommend)
 - UPI (often instant cashback promotions — GPay/PhonePe/Paytm, and instant UPI discounts on marketplaces)
-- RuPay credit card on UPI (the only cards that link to UPI; rewards vary — e.g. Tata Neu Infinity ~1.5%, BOBCARD Eterna ~3.75% on online+UPI)
+- RuPay credit card on UPI (the only cards that link to UPI; rewards vary — e.g. Tata Neu Infinity ~1.5%, BOBCARD Eterna ~3.75% on online+UPI; example rates churn — verify the current rate before quoting)
 - Coins / reward points (Amazon Pay coins, Flipkart SuperCoins, Tata Neu coins, Myntra Insider — often worth more on their home platform)
 - Cashback apps / aggregators (CashKaro, CouponDunia, GrabOn — extra % back, lands later, can expire)
 - Gift cards / wallet balance / corporate discounts
@@ -33,7 +33,7 @@ Effective price = List price
                 − cashback-app / aggregator payout (CashKaro/CouponDunia/GrabOn) if still live
                 − coin/reward redemption value (Amazon Pay / SuperCoins / Neu)
                 − exchange/trade-in bonus
-                + EMI processing fee (often ₹99-999 flat, sometimes %)
+                + EMI processing fee (often ₹99-999 flat, sometimes %; GST at 18% applies to fees too)
                 + GST on the waived interest (18% of the interest subsidy for "no-cost" EMI)
                 + any hidden handling/fulfillment charge
 ```
@@ -79,6 +79,7 @@ Financing turns a price into a monthly outflow. Before recommending EMI:
 - **Read the EMI ledger first** (see `emi.md`) — committed monthly EMI + remaining obligation vs the user's monthly EMI ceiling. The new EMI must fit the remaining headroom, not just the income ratio.
 - **EMI-readiness verdict** — committed + new monthly vs the user's monthly EMI ceiling (see `emi.md`): Ready / Almost / Not ready, with the numbers shown.
 - EMI amount vs monthly income — is the outflow comfortable?
+- **Credit-bureau impact** — pay-later/BNPL and EMI lines are reported to CIBIL and other bureaus; even a no-cost EMI adds a bureau-reported line. N active lines or a missed payment can affect future loan eligibility — say so in the readiness verdict.
 - Total interest over the chosen tenure (use 3/6/12-mo figures)
 - Down payment (zero-down vs a lump sum — a bigger down payment shrinks processing fee + GST)
 - Opportunity cost: would the cash be better kept for something else?

@@ -10,7 +10,7 @@ Load this file for **subscription/recurring-spend questions** — streaming, Pri
 Ask for / pull together every recurring item — don't assume a subset:
 
 - OTT/streaming (Netflix, Prime Video, Hotstar/Disney+, YouTube Premium, music apps)
-- Memberships (Amazon Prime, Flipkart Plus, quick-commerce plans, Walmart+ style offers, Zomato/Swiggy One)
+- Memberships (Amazon Prime, Flipkart Plus, quick-commerce plans, Zomato/Swiggy One)
 - App/subscription tiers (iCloud, Google One, software, VPNs)
 - Utilities/bills (ISP, phone recharges, cloud storage)
 - Physical (gym, subscriptions boxes, insurance)
@@ -21,7 +21,7 @@ Ask for / pull together every recurring item — don't assume a subset:
 For each line, ask:
 1. **Did you use it last month?** (log out of "I might use it")
 2. **Is the price still right?** — what it costs now vs when you joined (trail pricing, price hikes)
-3. **Is there a cheaper equivalent?** — shared family plans, annual-vs-monthly, student discounts, Jio/Airtel bundle offsets, cashback on recharge
+3. **Is there a cheaper equivalent?** — shared family plans, annual-vs-monthly, student discounts, Jio/Airtel bundle offsets, cashback on recharge; for software/SaaS, research alternatives on **AlternativeTo** and check G2/Capterra for free-tier or cheaper competitors before concluding "no cheaper equivalent"
 4. **Would you notice it gone in 7 days?** — if no, it's a candidate for churn
 
 ## 3. Annual vs monthly + GST math
@@ -46,6 +46,9 @@ Use the active-EMI ledger and readiness check (see `emi.md`) — the ledger (e.g
 - **Total monthly committed** vs value delivered — the headline number
 - Top 3 concrete savings with amounts (switch to annual, kill unused, split a family plan)
 - Renewal dates + auto-renew flags so nothing renews silently
+- **Free trials in flight** — any trial with an end date gets its own line: trial ends on X, cancel-before date, and what it converts to if not cancelled
+
+**Where cancellations actually happen:** UPI Autopay / NACH mandates are managed in the **bank app** (mandates/UPI Autopay section) or the merchant's account page — the skill points the user there; it cannot cancel anything itself.
 
 ## 6. Boundaries
 

@@ -23,9 +23,9 @@ Tracking only pays off if the record can be **read back later**. This playbook c
 
 1. **Source, in order:**
    1. The vault tracker/note (local users).
-   2. The AI platform's memory — same project/thread (web users; the platform remembers its own past answers).
+   2. The AI platform's memory — same project/thread (web users; the platform remembers its own past answers). If the record may have changed since, ask before trusting a stale answer.
    3. The user's attached `my-deals.csv` — any fresh chat where they attach the file.
-2. **Answer always shows:** product, date, effective price, **current status**, **where it's recorded** (file/row/note), and **next action** (e.g. *"claim open — if the brand ignores >7 days, escalate to NCH 1915"*; *"EMI active, 4 of 12 paid, due date the 5th"*).
+2. **Answer always shows:** product, date, effective price, **current status**, **where it's recorded** (file/row/note), and **next action** (e.g. *"claim open — if the brand ignores >7 days, escalate to NCH 1915"*; *"EMI active, 4 of 12 paid, due date the 5th"*). Include the **satisfaction rating** when one is recorded.
 3. **Standard status words** (one word, one meaning — see table below). If the record uses a different word, normalize it to the canonical one.
 4. **Not tracked yet?** Say *"not found — record it now?"* and emit the row to add. Never make the user dig through their own notes.
 
@@ -33,10 +33,12 @@ Tracking only pays off if the record can be **read back later**. This playbook c
 
 | Domain | Status | Meaning / typical next action |
 |---|---|---|
-| Deal | `bought` | Purchased. Next: post-purchase review (satisfaction, claims path if broken) |
-| Deal | `buying` | In-flight (ordered, not delivered). Next: delivery/installation check |
+| Deal | `noted` | Researched, decision pending. Next: worthiness verdict |
 | Deal | `waiting` | Queued — counts as **future spend** in the pipeline (see `tracker.md`). Next: sale trigger + price alert |
-| Deal | `cancelled` | Not bought / cancelled. Done — no further action |
+| Deal | `buying` | In-flight (ordered, not delivered). Next: delivery/installation check |
+| Deal | `bought` | Purchased. Next: post-purchase review (satisfaction, claims path if broken) |
+| Deal | `skipped` | Rejected *before* purchase (bad value / alternative won / don't-buy). Done |
+| Deal | `cancelled` | Order placed, then cancelled. Done — confirm the refund landed |
 | Claim | `open` | Filed, in progress. Next: chase at brand's promised SLA; escalate >7-14 days |
 | Claim | `approved` | Approved. Next: confirm refund/replacement timeline |
 | Claim | `rejected` | Denied. Next: escalation path (brand → NCH 1915 → e-Daakhil, see `claims.md`) |

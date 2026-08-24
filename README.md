@@ -13,6 +13,7 @@ Works with any AI agent that supports skills (Agent Skills-compatible tools).
 | **Hunt / compare / deal-check** | 3-5 real candidates across Amazon.in, Flipkart, and category platforms, scored **value = features ÷ price** |
 | **Worthiness gate** | Asks *"is this purchase worth it to you?"* before any research - the answer can be **Don't buy**, no matter the price |
 | **Deal verification** | Real price history vs inflated MRP, review-integrity checks (bursts = manipulation), community long-term-ownership checks (Reddit-first) |
+| **Market shock awareness** | Lightweight news sweep per hunt — category-wide shocks (RAM/memory shortages, component-cost hikes, launch inflation) reset targets instead of false "fake discount" flags |
 | **Pay Smart** | Effective price after card offers, UPI cashback, coins, cashback apps, EMI / no-cost EMI (with its hidden fees), split payment - **you decide on what you actually pay** |
 | **EMI readiness** | Committed monthly EMI + new EMI vs your ceiling → **Ready / Almost / Not ready**, with the numbers |
 | **Used / refurb** | On-spot test plan, mining-card & stolen-device signals, warranty-transfer reality |
@@ -88,7 +89,7 @@ deal-hunter/
 
 | File | Load when… |
 |---|---|
-| `prompt.md` | analyzing a specific shortlisted product (JOB 0-7 copy-paste prompt) |
+| `prompt.md` | analyzing a specific shortlisted product (JOB 0-10 copy-paste prompt) |
 | `india.md` | any India-market buy - platform map, sale calendar, scams |
 | `community.md` | verifying long-term ownership (Reddit-first, paid-plant detection) |
 | `finance.md` | any financed purchase - effective price, no-cost EMI reality, offer-stacking |
@@ -98,9 +99,11 @@ deal-hunter/
 | `used.md` | used/refurb candidates - on-spot testing, mining/stolen signals |
 | `import.md` | international listings - landed-cost math vs local |
 | `alerts.md` | every Wait verdict - price alert + sale trigger |
+| `market.md` | every hunt (lightweight) - market-shock detection: shortages, category-wide price resets, shrinkflation |
 | `subscriptions.md` | subscription/recurring-spend questions |
 | `tracker.md` | recording a hunt result - schema, pipeline rule, watchlist |
 | `recall.md` | any "status of X / where is my claim?" - read the record, don't re-research |
+| `examples.md` | seeing the pipeline in action - 8 worked examples (Buy now, Wait, Don't buy, Compare, Pay Smart flip, EMI flip, Quick Hunt, Market-shock flip) |
 
 ## Development
 

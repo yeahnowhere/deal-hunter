@@ -22,7 +22,7 @@ If no ledger exists, ask the user for the repair facts (date, device, issue, cos
 
 - **Cause** — `drop` / `defect` / `wear` / `user` (what actually caused it — drives whether a claim was ever realistic)
 - **Warranty-covered?** — `Yes` / `No` / `Partial` / `N/A` (e.g. self-sourced part)
-- **Claim status** — `none` / `filed` / `denied` / `resolved` (canonical claim words in `recall.md`: `open` / `approved` / `rejected` / `refund-issued` / `escalated`)
+- **Claim status** — `none` / `open` / `approved` / `rejected` / `refund-issued` / `escalated` (the canonical claim words from `recall.md`; `none` = no claim was ever filed)
 - **Paid by** — `OOP` / `warranty` / `insurance`
 - **Outcome** — one line: what happened after the repair (healthy / still broken / escalated / replaced)
 - **Repair status (canonical, for recall answers)** — `done` / `warranty` (covered fix) / `oow` (out of warranty, paid OOP); maps from Paid by + Outcome. See `recall.md`.
@@ -45,6 +45,8 @@ remaining value      = what the device sells for used in working order (or is wo
 replacement cost     = effective price of the best replacement (run a hunt — don't guess)
 need                 = does the repaired device still meet the original need? (specs/condition/age)
 ```
+
+**Get a real quote first.** ASC quotes run high — for out-of-warranty devices, price a reputable third-party repair shop as the comparison point before recommending replacement. Trade-off to state plainly: third-party repair can void any remaining warranty, so it's only the right call when the warranty is already gone or the saving dwarfs the remaining coverage.
 
 | Condition | Verdict | What to tell the user |
 |---|---|---|

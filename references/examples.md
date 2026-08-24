@@ -11,18 +11,21 @@
   3. Verify: the AX1800 card shows 4.4★/2.7K ratings, is a best-seller, MRP ~₹5,600 → 53% real vs historical pricing
   4. Score: the AX1800 card wins on features-per-rupee
 - Output: **Buy now — the AX1800 card.** WiFi 6 + BT 5.2 + card included, direct-fit PCIe x1, only ~₹600 more than a low-value adapter. Logged to tracker as "bought".
+- Gates summary: `Worthiness ✅ · Price ✅ · Community ✅ (2 owner threads, clean) · Review-integrity ✅`
 
 ## Example 2: Wait for sale
 
 - Input: "Is ₹4,999 a good price for [headphones]?"
 - Steps: Verify finds historical low of ₹3,499 reached 3x in past year; current price is typical, not low.
 - Output: **Wait for sale.** Target price ₹3,799. Track it; no purchase now.
+- Gates summary: `Worthiness ✅ · Price ❌ (typical, not low) · Community ✅ · Review-integrity ✅`
 
 ## Example 3: Don't buy
 
 - Input: "Should I buy [gadget] for ₹6,145?"
 - Steps: Verify finds equivalent spec (₹1,899) and ₹6,145 is a niche adapter with no warranty; need can be met cheaper or not at all.
 - Output: **Don't buy.** The need is inflated or met better elsewhere. Log the decision.
+- Gates summary: `Worthiness ❌ (need met at ₹1,899) · Price ✅ · Community ⚠️ (no coverage) · Review-integrity ⚠️`
 
 ## Example 4: Compare mode (user's own list)
 
@@ -34,6 +37,7 @@
   4. Review-check each: JBL review dates clustered (flag); Sony/Sennheiser spread out
   5. Weighted score: battery 3x, BT 2x → Sony CH520 (with price caveat) vs JBL
 - Output: **Pick alternative — JBL Tune 510BT** if budget is king; **Sony CH520** if battery matters most (wait for ~₹3,500). State both and why, per must-have weights. Then ask where to save.
+- Gates summary: `Worthiness ✅ · Price ⚠️ (CH520 above typical) · Community ✅ · Review-integrity ⚠️ (JBL dates clustered)`
 
 ## Example 5: Pay Smart flips a verdict (financing layer)
 
@@ -48,9 +52,29 @@
   - **Split payment**: ₹10k cash + card/EMI for the remainder
   - Effective price ≈ ₹30,799 − ₹600 (Gold) − ₹3,700 (card offer) ≈ **₹26,499-27,099** — **under the ₹30k ceiling**
 - Output: **Buy now — Pixel 8** (at effective price ~₹27k with card offer + no-cost EMI). Sticker price alone said "wait"; the payment layer made it affordable today. Then ask where to save.
+- Gates summary: `Worthiness ✅ · Price ✅ (effective under ceiling) · Community ✅ · Review-integrity ✅ · Financing ✅ (no-cost EMI)`
 
 ## Example 6: EMI readiness flips a verdict
 
 - Input: "Am I ready to buy [phone] at ₹72,999 on 6-mo EMI (~₹12,167/mo)? My active [phone] EMI is ₹3,500/mo."
 - Steps: read the EMI ledger → committed ₹3,500/mo, ceiling ₹6,000/mo → headroom ₹2,500/mo. New monthly ≈ ₹12,167/mo → committed + new ≈ ₹15,667/mo, way over the ceiling.
 - Output: **Not ready.** New EMI busts the ₹6,000/mo ceiling ~2.6x. Options: wait until the current EMI closes (~6 months → full ₹6,000 headroom), pick a cheaper model whose EMI fits the ceiling, or raise the down payment. Numbers shown: ceiling ₹6,000, committed ₹3,500, new ₹12,167, shortfall ₹9,667. Then ask where to save.
+- Gates summary: `Worthiness ✅ · Price ✅ · Financing ❌ (ceiling busted 2.6x)`
+
+## Example 7: Quick Hunt (≤₹1,000, batched gate)
+
+- Input: "Add a USB-C cable and a phone stand to my order — both under ₹500."
+- Steps:
+  1. JOB 0 Quick Hunt: two items ≤₹1,000 each → batched gate, one combined verdict
+  2. Quick check per item: spec meets the need, price not above typical, no scam signals
+  3. No full pipeline — no deep community dig, no weighted scoring at this tier
+- Output: **Buy both** — cable ₹149 (braided, 60W, typical ₹150-200 ✅), stand ₹299 (aluminum, typical ₹300-400 ✅). Combined ₹448.
+- Gates summary: `Quick Hunt · Worthiness ✅ (batched) · Price ✅ · Community n/a (tier)`
+
+## Example 8: Market shock flips a verdict (inflation layer)
+
+- Input: "Pixel 11 launched at ₹89,999 vs the Pixel 10's ₹79,999 — should I wait for the price to settle?"
+- Steps: market sweep finds a live memory shortage (DRAM prices more than doubled Oct 2025 → 2026; analysts project ~+13% smartphone prices for the year; Google publicly cited memory costs for the ₹10,000 hike, and Pro models even cut RAM 16GB → 12GB). Environment: `inflating`, expected to hold well past the next sale.
+- Verdict logic: the old base is gone — waiting for a sub-₹80k Pixel 11 means waiting out the shortage, not the next sale. Sale drops now apply off ~₹90k. Shrinkflation noted: +₹10k for less RAM on Pro models hurts the value score.
+- Output: **Buy now if the need is real** (effective price via exchange/bank offer), else hold the Pixel 10 / consider refurb — NOT "wait for a correction". Targets reset to the post-shock base.
+- Gates summary: `Worthiness ✅ · Price ✅ (new base, verified) · Market ⚠️ (inflating — targets reset) · Community ✅`

@@ -11,7 +11,7 @@ Load this file for **any used/refurb candidate** (used GPU/RAM/phone/laptop, "re
 - **r/IndianGaming bazaar/market threads** — search `market` / `bazaar`; private sellers, cash-on-delivery preferred
 - **Gamer's Loot** — established gaming-hardware reseller; still verify the specific listing
 - **ZedUpgrade** — Apple/Mac refurb specialist; confirm grading + warranty terms
-- **Flipkart/Amazon "renewed" & official refurb** — platform-backed (7-day return) = safer than private sales, but warranty is usually the **refurbisher's**, not the brand's
+- **Flipkart/Amazon "renewed", Cashify refurb & official refurb stores** — platform-backed (7-day return) = safer than private sales, but warranty is usually the **refurbisher's**, not the brand's
 - **Olx / Facebook Marketplace** — highest scam surface; meet in person, test on the spot, never prepay
 
 ## 2. On-spot test plan (per category)
@@ -27,7 +27,7 @@ Load this file for **any used/refurb candidate** (used GPU/RAM/phone/laptop, "re
 - Check the label/serial for warranty transfer eligibility
 
 ### Phone
-- IMEI blacklist check on brand portals (stolen/blocked devices are unsellable)
+- IMEI blacklist check — **CEIR (ceir.gov.in)** for the government stolen/blocked registry + the brand's own portal (stolen/blocked devices are unsellable)
 - Battery health % and whether the battery is replaceable + cost
 - Test: earpiece, mics, speakers, camera, charging, SIM slots, Wi-Fi/BT, screen for burn-in
 - Hidden-config check: paid diagnostic apps (e.g. Hidden Test) for the real state
@@ -37,11 +37,30 @@ Load this file for **any used/refurb candidate** (used GPU/RAM/phone/laptop, "re
 - Test keyboard, trackpad, ports, hinge, webcam, display dead pixels
 - Verify the serial/warranty on the brand portal (many "warranty till 2027" claims are false)
 
+### Console
+- Test controllers on-site — stick drift is the #1 used-console fault
+- Check account-ban status (online/multiplayer bans can bind the machine, not the seller); test HDMI output and the disc drive with an actual disc
+
+### Watch / wearable
+- Battery health + whether the battery is serviceable; pair to a phone on the spot (activation locks and region locks surface immediately)
+- Screen burn-in, strap/lug cracks, sensor function
+
+### Monitor / TV
+- Full-screen dead-pixel + backlight-bleed test (solid white/red/green/blue slides); panel uniformity at low brightness
+- Confirm ports carry the resolution/refresh you need (HDMI version matters)
+
+### Audio (TWS / headphones)
+- Battery degradation is the killer — test full-charge duration if possible; check charging-case contacts for corrosion
+- Left-right balance, driver rattle at low volume
+
 ## 3. Red flags (walk away signals)
 
 - **Mining card signals** — "used only for gaming, never mined" + dustless-to-perfection card, multiple identical GPUs from one seller, no original box
 - **Stolen-device signals** — no invoice, no box, pressured "urgent, no questions", IMEI blacklisted, price absurdly below market
 - **Seller patterns** — brand-new account, one listing, advance-payment-only, refuses on-spot testing, "no returns, as-is" + wants payment before you inspect
+- **Remote-deal red flags** — refuses a live video call showing the device working, "courier will deliver, pay first", stock photos instead of real shots
+
+**Inter-city/shipped deals:** transact only with long-term, verifiably established members (join date, heat score, post history), demand the live video proof **before** paying, and prefer COD where the platform supports it.
 - **Warranty-transfer lies** — seller claims remaining warranty but the brand's portal shows it's non-transferable or expired; read owner reports, not the marketing line
 
 ## 4. Warranty-transfer reality

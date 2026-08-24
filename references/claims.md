@@ -14,12 +14,13 @@ Load this file when a purchase **breaks, arrives wrong, or the warranty is refus
 
 ## 2. The claims ladder (lowest effort → highest)
 
-1. **Brand service center** — contact the brand's official support/ASC with invoice + serial; most warranty claims resolve here
+1. **Brand service center** — contact the brand's official support/ASC with invoice + serial; most warranty claims resolve here. *If silent >7 days, move up a rung.*
 2. **Platform support** — if bought on a marketplace, the seller/platform mediates first (arrived-wrong, DOA, counterfeit, seller warranty)
-3. **National Consumer Helpline (NCH)** — call **1915** or file at **consumerhelpline.gov.in**; a logged complaint often unlocks a response the brand ignored for weeks
-4. **e-Daakhil** (online consumer forum) — free, online consumer-complaint filing at **edaakhil.nic.in**; refund/replacement/compensation can be awarded
-5. **District consumer commission** — only for amounts above the e-Daakhil/forum limit, or if the brand ignores the forum order
-6. Whatever the outcome, **log it** — a covered repair goes in the repair ledger as `Paid by = warranty` (see `repairs.md`); a denied claim becomes an OOP repair that tells the truth about durability. Log the **claim status** with the canonical words (`open` / `approved` / `rejected` / `refund-issued` / `escalated` — see `recall.md`) so a later *"where is my claim?"* can be answered from the record.
+3. **National Consumer Helpline (NCH)** — call **1915** or file at **consumerhelpline.gov.in**; a logged complaint often unlocks a response the brand ignored for weeks. NCH complaints typically converge within ~30 days — if the brand still stalls, escalate.
+4. **Consumer commission via e-Daakhil** — e-Daakhil (**edaakhil.nic.in**) is the online filing door into the consumer commissions: District commission for claims up to ₹50L, State above that, National above ₹2Cr. Filing is online, fees are nominal at District level, and refund/replacement/compensation can be awarded.
+5. **Whatever the outcome, log it** — a covered repair goes in the repair ledger as `Paid by = warranty` (see `repairs.md`); a denied claim becomes an OOP repair that tells the truth about durability. Log the **claim status** with the canonical words (`open` / `approved` / `rejected` / `refund-issued` / `escalated` — see `recall.md`) so a later *"where is my claim?"* can be answered from the record.
+
+**Pressure multipliers before/alongside the ladder:** public complaint portals (**Voxya**, ConsumerComplaints.in) put the case in front of corporate escalation teams; r/legaladviceindia and r/ConsumerRightsIndia help sanity-check the path. The regulator backdrop: the **CCPA** enforces the Consumer Protection Act 2019, and the **Consumer Protection (E-Commerce) Rules 2020** specifically obligate marketplaces to grievance officers with response timelines — cite them when a platform stalls.
 
 ## 3. What to prepare before escalating
 

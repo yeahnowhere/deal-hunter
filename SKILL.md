@@ -1,6 +1,6 @@
 ---
 name: deal-hunter
-description: "Find the best-value product (quality / price, not the cheapest) for any purchase by an Indian buyer, including the payment layer: card offers, UPI cashback, EMI / no-cost EMI, coins, cashback apps, split payments - decide on the effective price. Use when a user asks to find a product, research a deal, check if a discount or MRP strikethrough is real, compare specific products ('compare these', 'which is better', 'A or B'), verify reviews/sellers/price history, or decide buy now / wait / alternative / don't buy. Also for used/refurb verification, imports (landed cost vs local), price alerts, warranty claims and escalation (NCH 1915 / e-Daakhil), repair-vs-replace, subscription audits, and EMI tracking/readiness (Ready / Almost / Not ready). Includes a worthiness gate, Reddit-first community verification, compatibility checks, pipeline-aware budgeting, and purchase-mechanics/safety. Built for the Indian market (₹, Amazon.in/Flipkart/Croma, GST, sale calendar). Two modes: Hunt and Compare."
+description: "Find the best-value product (quality / price, not the cheapest) for any purchase by an Indian buyer, including the payment layer: card offers, UPI cashback, EMI / no-cost EMI, coins, cashback apps, split payments - decide on the effective price. Use when a user asks to find a product, research a deal, check if a discount or MRP strikethrough is real, compare specific products ('compare these', 'A or B'), verify reviews/sellers/price history, or decide buy now / wait / alternative / don't buy. Also for used/refurb verification, imports (landed cost), price alerts, claims & escalation (NCH/e-Daakhil), repair-vs-replace, subscription audits, EMI tracking/readiness (Ready/Almost/Not ready), and market shocks - category-wide price moves: component shortages, price hikes, inflated launches. Worthiness gate, Reddit-first community verification, compatibility, pipeline-aware budgeting, purchase-mechanics/safety. Built for the Indian market (₹, Amazon/Flipkart/Croma, GST, sale calendar). Two modes: Hunt and Compare."
 ---
 
 # Deal Hunter
@@ -12,13 +12,31 @@ Find the **best-value** product for a buyer: the cheapest price that still meets
 - **Hunt mode** — no specific product chosen yet, or user asks "find me the best X". Follow the Deal Hunting Loop below.
 - **Compare mode** — user already picked the candidates. Follow the Compare Mode workflow below.
 
+### Tiering — how deep to go
+
+- **Quick Hunt** — purchases under ₹1,000 (or trivially replaceable items). Compressed loop: worthiness gate → 2–3 candidates (table + links) → light verify (review integrity + community spot-check) → effective price if any payment offer plausibly applies → verdict. Every skipped deep-loop step is listed as `n/a (quick hunt)` — never omitted silently.
+- **Deep Hunt** — everything else. Full loop below.
+
 ### Hunt Mode — The Deal Hunting Loop
 
 Run every step in order for each hunt:
 
-1. **Define Need + Worthiness** — Lock in must-have specs, budget ceiling, must-have vs nice-to-have. Write one sentence: "What am I actually solving?" Consider repair, reuse, second-hand, or not-buying first. **ASK the user (never assume): "Is this purchase worth it to you?"** — what it replaces/solves, how often it'll really be used, whether the money is better spent elsewhere. A purchase that isn't worth it to the user is a **Don't buy** no matter the price; only proceed after they confirm.
+1. **Define Need + Worthiness** — Lock in must-have specs, budget ceiling, must-have vs nice-to-have. Write one sentence: "What am I actually solving?" Consider repair, reuse, second-hand, or not-buying first. **ASK the user (never assume): "Is this purchase worth it to you?"** — what it replaces/solves, how often it'll really be used, whether the money is better spent elsewhere. A purchase that isn't worth it to the user is a **Don't buy** no matter the price; only proceed after they confirm. **Quick Hunt batching:** under ₹1,000, ask the worthiness question AND show provisional candidates in the same reply (marked *"provisional — pending your go-ahead"*); hold the formal verdict until they confirm.
 2. **Cast Wide Net** — Research across multiple platforms for the Indian market: Amazon.in, Flipkart, plus the category-specific map in `references/india.md` (Croma, Reliance Digital, Tata Neu, Cashify/Amazon Renewed for refurb, OLX/Quikr for second-hand, Myntra/Ajio for fashion, Blinkit/Zepto/JioMart for groceries, 1mg/PharmEasy for health). Aim for **3-5 real candidates**, not just the first result. Include the "cheap but surprisingly good" tier.
-3. **Verify Hard** — Run the deal-hunter prompt (see `references/prompt.md`) on each shortlisted product: price fairness, review integrity, review recency, durability, seller/warranty, **community verification (Reddit-first long-term ownership — see `references/community.md`)**, **compatibility & fit** (does it work with what the user already owns: ports, fit, PSU, driver/OS, hidden requirements), cross-check price history. **Used/refurb candidates:** also run the on-spot test plan + mining-card/stolen-device + warranty-transfer checks (see `references/used.md`) — used is a separate tier. **Dynamic pricing:** a quoted price may not be the price — check logged-in vs incognito, app vs web, device/pincode variance (see `references/india.md`), especially for groceries; log both if they disagree and decide on the lower verified one.
+
+**Output — Candidates found (present to user before verifying):**
+Present the initial candidate list as a table with product links so the user can review what was found:
+```
+## Candidates found
+| # | Product | Platform | Price | Key specs | Link |
+|---|---------|----------|-------|-----------|------|
+| 1 | TP-Link AX1800 | Amazon.in | ₹2,600 | WiFi 6, BT 5.2, PCIe | https://... |
+| 2 | ... | ... | ... | ... | ... |
+```
+
+> **Link cell rule:** every row needs a direct product URL. If research only surfaced category/search pages, write `no direct listing — search "<product>" on <platform>` — never paste a category or search URL as if it were the product page, and repeat the flag under Evidence.
+
+3. **Verify Hard** — Run the deal-hunter prompt (see `references/prompt.md`) on each shortlisted product: price fairness, review integrity, review recency, durability, seller/warranty, **community verification (Reddit-first long-term ownership — see `references/community.md`)**, **compatibility & fit** (does it work with what the user already owns: ports, fit, PSU, driver/OS, hidden requirements), cross-check price history. **Used/refurb candidates:** also run the on-spot test plan + mining-card/stolen-device + warranty-transfer checks (see `references/used.md`) — used is a separate tier. **Dynamic pricing:** a quoted price may not be the price — check logged-in vs incognito, app vs web, device/pincode variance (see `references/india.md`), especially for groceries; log both if they disagree and decide on the lower verified one. **Market context:** run the lightweight market-news sweep (~90 days) before judging fairness — a category-wide shock changes what counts as a good price and resets "Wait" targets (see `references/market.md`).
 4. **Score & Compare** — Value score = feature score ÷ price. Build a comparison table (see Output Format below).
 5. **Pay Smart (finance check)** — For each candidate near the budget ceiling, research the payment layer: credit/debit card offers, network-card discounts (Visa/MC/RuPay/Amex), EMI plans (incl. Bajaj/Instacred/Snapmint cardless), **no-cost EMI**, split payments (cash + card/EMI remainder), **UPI cashback**, **RuPay credit card on UPI**, **coins/reward points** (Amazon Pay / SuperCoins / Neu / Insider), and **cashback apps** (CashKaro/CouponDunia/GrabOn). Compute **effective price = list price − card discount − cashback − coin/reward value + EMI processing fee + GST on waived interest**. Decide on effective price, never the sticker price. Full guides in `references/finance.md` and `references/india.md`. **EMI readiness (if financing or existing EMIs):** read the user's active-EMI ledger (see `references/emi.md`) — total monthly committed + remaining obligation vs their monthly EMI ceiling — add the new purchase's monthly cost, and give a **Ready / Almost (get ready) / Not ready** verdict with the numbers. **Imports:** if the best option is an international listing, compute the **landed cost** (customs/IGST, courier vs postal, currency markup) vs the local effective price (see `references/import.md`) before deciding.
 6. **Pipeline-aware budget (informational)** — Count `waiting` / `noted + Buy` rows in the user's tracker as **future spend, not "not bought"**, and every **active EMI's remaining obligation** (see `references/emi.md`) as committed future spend. Before deciding, surface the total: "₹X out, ₹Y queued (~₹Z converts at the next sale), ₹E EMI remaining, new ≈ ₹W → X + Y + Z + E + W. Proceed / split / defer?" Never silently block — just show the number.
@@ -49,6 +67,7 @@ Use the same Output Format and Quality Gates below.
 ## Not For / Boundaries
 
 - Does NOT automate or execute purchases — it researches and recommends
+- Does NOT pass off category/search-listing URLs as product links — missing links are flagged, not disguised
 - Does NOT trust MRP, strikethrough prices, or star ratings as evidence
 - Does NOT invent prices, reviews, offers, or sale dates — cite where each fact was found; sale dates and offers must be re-verified live at research time
 - Does NOT run credit checks, verify EMI eligibility, or guarantee that any financing offer will be approved — quote the payment terms as the seller/bank lists them
@@ -60,10 +79,13 @@ Use the same Output Format and Quality Gates below.
 
 ## Quality Gates (non-negotiable)
 
+Before any Buy recommendation, re-check this list and append a one-line gates summary to the Evidence section, e.g. `Gates: worthiness ✅ · price history ✅ · market ✅ (normal) · community ⚠️ (no Reddit coverage — Nykaa/Snapdeal substituted) · compatibility n/a · pipeline n/a · ≥2 candidates ✅ · effective price ✅ · mechanics ✅`. Every gate appears as ✅ / ⚠️ / ❌ / n/a with a reason — silence not allowed.
+
 Check all before giving a Buy recommendation:
 
 - [ ] Worthiness gate passed — the user was asked and confirmed it's worth it
 - [ ] Real price history checked — "50% off" on an inflated MRP is not a deal
+- [ ] Market context swept — lightweight news check done; if the category is `inflating`/`shortage`, targets are reset to the post-shock base (`references/market.md`)
 - [ ] Community check done — long-term ownership found (Reddit-first), no paid-plant red flags ignored
 - [ ] Compatibility & fit verified — works with what the user already owns
 - [ ] Pipeline-aware budget shown — out + queued + new total surfaced
@@ -77,7 +99,7 @@ Check all before giving a Buy recommendation:
 
 ```
 ## Candidates (value score = features per rupee)
-| Option | Key specs | Price | Value score | Verdict |
+| Option | Key specs | Price | Value score | Link | Verdict |
 
 ## Best value
 [Product + why it wins on quality-per-rupee, not raw cheapness]
@@ -102,6 +124,8 @@ Check all before giving a Buy recommendation:
 [Where each price/review fact was found; flag anything unverified]
 ```
 
+Link cells follow the Link cell rule above: direct product URLs only — `no direct listing — search "<product>" on <platform>` when none exists, flagged again under Evidence.
+
 ## Core Rules
 
 1. **Worthiness first, always.** Never research a purchase the buyer doesn't think is worth it. Ask before analysis; "don't buy" needs no price research.
@@ -114,6 +138,8 @@ Check all before giving a Buy recommendation:
 8. **Imports pay twice.** Customs/IGST, courier-vs-postal handling, currency markup, and grey-import (no Indian warranty) often flip the verdict. Compute landed cost vs local effective price (`references/import.md`).
 9. **A wait without an alert is a leak.** If the verdict is "wait", set the price alert and tie it to a named sale — otherwise the sale passes silently (`references/alerts.md`).
 10. **Repairs tell the truth about durability.** A device that needed two expensive OOP repairs is a bad rebuy. Log every repair and run repair-vs-replace before fixing or replacing (`references/repairs.md`).
+11. **No silent skips.** If a loop step can't run or doesn't apply, say so in one line (`n/a because …`). An omitted step reads as completed.
+12. **Links are evidence.** A category URL in a Link field is fabrication. Missing links get flagged explicitly, in the table and in Evidence.
 
 ## Saving Results
 
@@ -187,6 +213,10 @@ When the user asks *"what's the status of X?"*, *"where is my claim?"*, *"any EM
 - `references/alerts.md` — Price alerts & Watchlist re-check.
   **Covers:** Keepa / pricehistory.in / camelcamelcamel alerts, Telegram deal bots, monthly sale re-check routine, stale-item downgrade.
   **Load when:** every Wait verdict.
+
+- `references/market.md` — Market context & news layer (shock detection).
+  **Covers:** lightweight 90-day news sweep, shock-signal table (category-wide rises, price-history step-changes, spec shrinkflation), environment classification (`normal / softening / inflating / shortage`), verdict-flip rules under shocks, sourcing discipline.
+  **Load when:** every hunt — lightweight; deep dive on signals.
 
 - `references/subscriptions.md` — Subscriptions & recurring-spend audit.
   **Covers:** inventory, per-subscription worthiness, annual-vs-monthly + GST math, shared/student plans, EMI audit.

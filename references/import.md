@@ -1,6 +1,9 @@
 # Imports & Global Purchases (import-vs-local)
 
-Load this file for **any international listing** the user is considering — AliExpress, Amazon US/UK/DE, eBay, brand-direct overseas sites, Kickstarter, "imported" listings on Indian marketplaces. The sticker price abroad is not the price; the **landed cost** is, and it's often higher than the local effective price once customs and warranty reality are added.
+Load this file for **any international listing** the user is considering — Amazon US/UK/DE, eBay, brand-direct overseas sites, "imported" listings on Indian marketplaces. The sticker price abroad is not the price; the **landed cost** is, and it's often higher than the local effective price once customs and warranty reality are added.
+
+> [!warning] AliExpress is still banned in India
+> AliExpress has been blocked in India since 2020, and the government clarified in Aug 2025 that no unblocking order exists. Treat any AliExpress purchase as a legality/policy risk *plus* the usual grey-import risks (no warranty, no returns path) — steer to Indian-marketplace equivalents or other import channels instead.
 
 > [!important] Imports pay twice
 > **Landed cost = foreign price + shipping + customs duty + IGST + handling/courier fees (+ currency-markup)**. A ₹3,000 saving on the sticker can vanish in customs + a grey-import (no Indian warranty) — compute the landed cost vs the local effective price before the verdict.
@@ -18,7 +21,8 @@ Landed cost = foreign price (converted to ₹)
 
 - **Assessable value** is the base — customs duty % + IGST apply on top of it; aggregator quotes differ from the self-import reality
 - **Courier vs postal**: couriers (FedEx/DHL/UPS) are faster but charge clearance/handling fees and bill customs directly; postal (India Post + trackable services) is slower but often cheaper
-- Anything under ₹5,000 in value is usually duty-free *in theory* — but courier handling fees can still make small parcels not worth it; verify the current threshold before assuming
+- **TCS/LRS** — foreign spends above the LRS free limit attract Tax Collected at Source (currently 5% above ₹7L/year for most categories); relevant for big-ticket imports and subscriptions billed abroad
+- The de-minimis relief applies to the **postal/gift channel** (goods up to ₹5,000 imported by post as gifts are duty-exempt in theory) — commercial courier imports don't get the same treatment, and courier handling fees can still make small parcels not worth it; verify the current threshold before assuming
 
 ## 2. Grey-import warranty reality (the part that flips verdicts)
 
@@ -26,6 +30,7 @@ Landed cost = foreign price (converted to ₹)
 - Even when the brand honors global warranty, Indian centers may reject products not sold through the Indian channel (common with electronics, phones, laptops)
 - Battery-replacement, hinge, and other service costs land on the user — factor them in
 - **BIS-restricted categories** (electronics, toys, etc.) — mandatory Indian BIS registration; non-compliant imports can be blocked at customs or unsupported locally; check the category before buying
+- **Crowdfunded imports (Kickstarter/Indiegogo)** — no consumer-protection net: delivery can slip by years or never arrive, and a failed campaign leaves a chargeback as the only recourse; treat as speculation, not shopping
 
 ## 3. When imports actually win
 

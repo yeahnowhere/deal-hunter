@@ -23,6 +23,7 @@ If no ledger exists, ask the user for their active EMIs (product, financier, pri
 - **Monthly EMI** — exact figure from the statement when available; estimate = principal ÷ tenure until then (flag as estimate)
 - **Remaining obligation** — principal still owed (Σ of unpaid instalments); this is **committed future spend**
 - **Interest** — e.g. `0% (no-cost)`, `15% p.a.`; also note processing/convenience fees
+- **Early-closure penalty** — fetch the actual figure from the financier's statement/loan agreement before ever recommending closure; never estimate it
 - **Status** — `active` / `closed` / `early-closed` (canonical EMI words in `recall.md`); keep closed rows as history
 - Summary block (top of ledger): **monthly EMI ceiling**, **total monthly committed**, **remaining obligation**, **last updated**
 
@@ -69,6 +70,8 @@ Surface this on any new purchase (JOB 7) before deciding. Informational — neve
 - **Consider closing high-interest EMIs early** only when the closure penalty < the interest remaining to be saved.
 - **Re-verify no-cost claims** — processing fee + GST on the waived interest are real costs (see `finance.md` §3).
 - **Monthly ritual:** when statements arrive, update monthly EMI / remaining months / due dates, mark closed EMIs, and fill pending breakups (a ledger with stale numbers produces wrong readiness verdicts).
+- **Keep the auto-debit funded** — a missed NACH/bank debit means bounce fees plus a credit-bureau hit; confirm the mandate account has balance before each due date.
+- **Credit-bureau reality** — every EMI/pay-later line is bureau-reported (CIBIL etc.); clean repayment builds the score, while misses and over-extension hurt future loan eligibility. Mention this when the readiness verdict is Almost/Not ready.
 
 ## 6. Output
 
