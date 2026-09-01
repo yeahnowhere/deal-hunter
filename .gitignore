@@ -2,3 +2,9 @@
 AGENTS.md
 # Vault-internal MOC (wikilinks + local install paths) — never ships.
 deal-hunter-mocs.md
+# Packaged skill zip — rebuilt by sync-dealhunter.ps1, not source.
+deal-hunter.skill
+# All-in-one merged copy — vault-internal reference, not part of skill distribution.
+Deal-Hunter SKILL AIO.md
+# Deploy/verify script — local maintenance tool, not part of skill distribution.
+sync-dealhunter.ps1
