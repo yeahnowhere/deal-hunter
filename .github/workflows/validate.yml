@@ -139,7 +139,7 @@ jobs:
           zip_path = os.path.join(root, "deal-hunter.skill")
 
           skip = {".git", ".gitattributes", ".gitignore", "AGENTS.md", "deal-hunter-mocs.md",
-                  "README.md", ".github", "dist"}
+                  "deal-hunter.skill", "README.md", ".github", "dist"}
 
           with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
               for dp, dirs, fns in os.walk(root):
