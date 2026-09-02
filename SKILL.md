@@ -42,7 +42,8 @@ Present the initial candidate list as a table with product links so the user can
 6. **Pipeline-aware budget (informational)** — Count `waiting` / `noted + Buy` rows in the user's tracker as **future spend, not "not bought"**, and every **active EMI's remaining obligation** (see `references/emi.md`) as committed future spend. Before deciding, surface the total: "₹X out, ₹Y queued (~₹Z converts at the next sale), ₹E EMI remaining, new ≈ ₹W → X + Y + Z + E + W. Proceed / split / defer?" Never silently block — just show the number.
 7. **Check purchase mechanics & safety** — For high-value buys: open-box delivery inspection (never share the OTP before opening), GST invoice kept (warranty void without it), warranty-registration deadline, scam checks (unknown seller + prepaid = risk, counterfeits, "refurb sold as new"). Full list in `references/india.md`.
 8. **Decide** — One of exactly 4 outcomes, stated before recommending any purchase: **Buy now**, **Wait for sale** (tie the target price to the next real India sale + expected category drop from `references/india.md`, and **set a price alert** — see `references/alerts.md`), **Pick alternative**, **Don't buy**. For big-ticket/financed buys, decide against the effective price.
-9. **Record** — Ask the user where to save results. By default, output the record in chat; only write a file or offer a download when the user explicitly asks. The skill's own files are read-only templates — never write into them. **Web/cloud agents (can't write files):** hand the user a copy-paste block (CSV row or table line) and say which file to paste it into — never claim it was saved. The merged `assets/my-deals.csv` (deal + claim + EMI + repair on one row) is the portable record any AI can read back later. See "Saving Results" and "Tracking & Recall" below.
+8b. **Complementary products** — After the verdict, ask: does this product need an essential companion to work properly or achieve the user's goal (e.g. facewash → moisturizer)? If yes, surface it with a one-line reason and ask if they want the best-value pick — **never auto-hunt** (see `references/companions.md`).
+9. **Record** — First **run `scripts/resolve-config.py`** to get the config path (single deterministic step — the returned path is authoritative), then detect the route and save there automatically — don't ask "where do you want to save?" every hunt (see `references/environment.md`). Route order: Obsidian **MCP** connected → write the actual trackers via MCP vault-relative paths (`Trackers/<file>`, notes to `Journal/`) — works on any synced device; else a `storage.vault_paths` entry resolves on this machine → write to that vault's `Trackers/` + `Journal/`; else **workspace** (`.agents/deal-hunter/workspace/`); else (no write access) **chat** copy-paste block (CSV row or table line), telling the user which file to paste it into — never claim it was saved. Ask to create `deal-hunter.config.json` only once if no config resolves; an explicit "save this to X" overrides. The skill's own files and `assets/*.csv` are read-only templates — never write into them. The merged `my-deals.csv` (deal + claim + EMI + repair on one row) is the portable record any AI can read back later. See "Saving Results" and "Tracking & Recall" below.
 10. **Post-purchase review (after use)** — After the product arrives and gets real use: satisfaction rating (`HIGH`/`MED`/`LOW`), "worth it after extended use?", and any surprises. Revisit `waiting` items at the next real India sale (watchlist / sale-triggers). **Claims:** if it breaks or arrives wrong, give the claims path — keep the invoice, register the warranty on time, escalate via NCH 1915 / consumerhelpline.gov.in / **e-Daakhil** (see `references/claims.md`). **Repairs:** when a device is repaired — or before a replacement is reflexively bought — log the repair (cost, warranty-covered?, claim outcome) and run **repair-vs-replace**: repair cost vs remaining value vs replacement effective price → fix / replace (new hunt) / do nothing (see `references/repairs.md`).
 
 ### Compare Mode — Head-to-Head of User's Products
@@ -71,7 +72,7 @@ Use the same Output Format and Quality Gates below.
 - Does NOT trust MRP, strikethrough prices, or star ratings as evidence
 - Does NOT invent prices, reviews, offers, or sale dates — cite where each fact was found; sale dates and offers must be re-verified live at research time
 - Does NOT run credit checks, verify EMI eligibility, or guarantee that any financing offer will be approved — quote the payment terms as the seller/bank lists them
-- Does NOT guess a save destination — asks the user where to save first, and outputs the record in chat by default (no file, no download unless asked)
+- Does NOT guess a save destination — it detects the environment and uses the config-driven route (MCP / PC vault path / workspace / chat fallback), asking only once to set up `deal-hunter.config.json` if ambiguous
 - Market focus: **India** (₹, Indian platforms, GST, Indian sale calendar), with a dedicated import layer for international purchases (see `references/import.md`). For other markets the platform map and payment layer do not apply.
 - Does NOT file the claim for the user — it researches, prepares the evidence, and gives the escalation path; the user files with the brand/NCH/e-Daakhil
 - Required inputs: product name or category + budget (if missing, ask 1-3 questions before proceeding)
@@ -93,6 +94,7 @@ Check all before giving a Buy recommendation:
 - [ ] Effective price computed for any financed purchase — decision based on effective price, not sticker
 - [ ] EMI-readiness checked if EMIs are active — Ready / Almost / Not ready (`references/emi.md`)
 - [ ] Purchase mechanics checked for high-value buys — open-box, GST invoice, warranty registration
+- [ ] Complementary check done — essential companions surfaced if applicable, or `n/a` if standalone
 - [ ] Decision written down (tracker row) before the purchase
 
 ## Output Format
@@ -114,6 +116,9 @@ Check all before giving a Buy recommendation:
 - Who this product is for, and who should avoid it
 - Purchase-mechanics + safety note for the recommended buy
 
+## Complementary products
+[Only when the product needs an essential companion — one line: reason + "want me to find the best-value pick?"]
+
 ## Claims & next steps
 - Warranty-registration deadline + how to register
 - Price alert to set + the sale trigger (if Wait)
@@ -132,7 +137,7 @@ Link cells follow the Link cell rule above: direct product URLs only — `no dir
 2. **Decide on effective price, not sticker.** Card discounts, UPI cashback, coins, cashback apps, reward points, and EMI fees change what you actually pay. A product over budget can become buyable at its effective price.
 3. **No-cost EMI ≠ free.** Banks charge a processing fee and GST on the waived interest; tenure may be capped. Always compute effective price including those fees before calling it zero.
 4. **Queued is future spend.** `waiting`/`noted + Buy` tracker rows are not "not bought" — surface out + queued + new before deciding (informational, never block silently).
-5. **Save where the user wants.** Ask before recording; default is chat output. Only write a file or offer a download when asked — never into the skill's own files.
+5. **Save where the environment dictates.** Detect the route (MCP / PC/vault path / workspace / chat) from `references/environment.md` and save there automatically — don't re-ask "where to save?" every hunt. Ask only once to create the config if genuinely ambiguous; an explicit user instruction overrides. Never write into the skill's own files.
 6. **A deal isn't proven until it's used.** After purchase, get the satisfaction rating (HIGH/MED/LOW) and "worth it after extended use?" — it makes the next value score honest.
 7. **Used ≠ new.** A used/refurb part is a separate tier: test on the spot, screen for mining/stolen units, know whether warranty transfers before paying (`references/used.md`).
 8. **Imports pay twice.** Customs/IGST, courier-vs-postal handling, currency markup, and grey-import (no Indian warranty) often flip the verdict. Compute landed cost vs local effective price (`references/import.md`).
@@ -143,16 +148,17 @@ Link cells follow the Link cell rule above: direct product URLs only — `no dir
 
 ## Saving Results
 
-Ask the user where to save. **Default: output the record in chat** — no file written, no download.
+Storage is **environment-driven**. First **run `scripts/resolve-config.py`** — it returns the config path (single deterministic step; the returned path is authoritative). Then detect the route and save automatically; ask to create `deal-hunter.config.json` only once if no config resolves:
 
-- **Chat output (default)** — verdict record as text, including CSV row if requested.
-- **Tracker note** — append a row using the schema in `references/tracker.md`.
-- **File / download (only on request)** — append to their chosen file or hand them a downloadable CSV.
+- **MCP route (preferred when an Obsidian MCP is connected)** — write the actual trackers via MCP vault-relative paths: `Trackers/<tracker_file>` (+ EMIs/claims/repairs) and individual notes to `<notes_dir>/<product>.md` (default `Journal/`). Device-independent — works on any synced vault.
+- **PC/local route** — no MCP, but a `storage.vault_paths` entry resolves on this machine: write to `<that path>/<tracker_dir>/<file>` and `<that path>/<notes_dir>/<product>.md`.
+- **Workspace route** — no vault / web user: write to `.agents/deal-hunter/workspace/` (`tracker.md` schema + `my-deals.csv`).
+- **Chat route (no write access)** — verdict record as a copy-paste block (CSV row or table line) + which file to paste it into; never claim it was saved.
 
 > [!important] The skill's CSV files are read-only templates
-> `assets/my-deals.csv`, `assets/deal-tracker.csv`, `assets/emi-tracker.csv`, and `assets/repairs.csv` ship as **templates** — they show the format; they are not write targets. Never modify the skill's own files. On platforms where writing files is not possible, chat output ensures the user always gets the record.
+> `assets/my-deals.csv`, `assets/deal-tracker.csv`, `assets/emi-tracker.csv`, and `assets/repairs.csv` ship as **templates** — they show the format; they are not write targets. Never modify the skill's own files. Your own `my-deals.csv` lives in your chosen storage (vault `Trackers/` or the workspace), not in the skill's `assets/`.
 
-Wait for their choice before writing anything.
+An explicit user instruction ("save this to X") always overrides the detected route.
 
 ## Tracking & Recall
 
@@ -165,6 +171,14 @@ When the user asks *"what's the status of X?"*, *"where is my claim?"*, *"any EM
 5. **Not tracked yet?** Say "not found — record it now?" and emit the row to add.
 
 ## Reference Materials
+
+- `scripts/resolve-config.py` — deterministic config-path resolver. **Run this first** when storage is needed; the returned path is authoritative (see `references/environment.md`).
+
+- `references/environment.md` — Agent environment & storage.
+  **Covers:** the config resolver (`scripts/resolve-config.py`), the environment probe (MCP → PC/path → workspace → chat), the three storage routes, vault-relative targets (`Trackers/`, `Journal/`), the workspace layout, and the one-time `deal-hunter.config.json` schema.
+  **Load when:** recording a result, or answering "where should I save?" — at the start of any session needing storage.
+
+- `scripts/config.example.json` — A ready-to-copy `deal-hunter.config.json` template, kept beside the resolver that creates it (per-machine `vault_paths`, MCP dirs, workspace dir).
 
 - `references/prompt.md` — Full deal-hunter analysis prompt (JOB 0-7).
   **Covers:** worthiness gate, price research, review integrity, community verification, compatibility, value scoring, payment optimization, purchase mechanics, pipeline budget, final verdict.
@@ -222,6 +236,10 @@ When the user asks *"what's the status of X?"*, *"where is my claim?"*, *"any EM
   **Covers:** inventory, per-subscription worthiness, annual-vs-monthly + GST math, shared/student plans, EMI audit.
   **Load when:** subscription or recurring-spend questions.
 
+- `references/companions.md` — Complementary products reasoning guide.
+  **Covers:** identifying essential companions (does this product need something else to work properly?), essential-vs-optional distinction, category examples.
+  **Load when:** every verdict — companion surfacing.
+
 - `assets/deal-tracker.csv` — Blank CSV **template** for deal tracking (read-only).
 - `assets/my-deals.csv` — Merged CSV **template** (deal + claim + EMI + repair, one row per purchase; read-only).
 - `assets/emi-tracker.csv` — CSV **template** for EMI records (read-only).
@@ -231,4 +249,4 @@ When the user asks *"what's the status of X?"*, *"where is my claim?"*, *"any EM
 
 ## Examples
 
-For worked examples (Buy now, Wait for sale, Don't buy, Compare mode, Pay Smart flip, EMI readiness flip), see `references/examples.md`.
+For worked examples (Buy now, Wait for sale, Don't buy, Compare mode, Pay Smart flip, EMI readiness flip, quick hunt, market shock, complementary surfacing), see `references/examples.md`.

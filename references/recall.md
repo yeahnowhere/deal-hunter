@@ -11,7 +11,7 @@ Tracking only pays off if the record can be **read back later**. This playbook c
 
 ## Record — one row per purchase
 
-1. **Ask where to save first.** Default output is chat — no file, no download unless asked (see SKILL.md "Saving Results").
+1. Save to the config-driven route (MCP / PC vault path / workspace / chat) per `environment.md` — don't re-ask "where to save?" every hunt (see SKILL.md "Saving Results").
 2. **Vault/local agents:** append a row to the user's tracker note (`tracker.md` schema) or their own `my-deals.csv`. One row per purchase; link the note where detail lives.
 3. **Web/cloud agents (can't write files):** output the row as a **copy-paste block** (a CSV row or a markdown table line) and tell the user which file to paste it into. **Never claim it was saved.**
 4. **Merged schema (everything in one file):** `assets/my-deals.csv` — deal + claim + EMI + repair columns on one row, so recall has the full lifecycle without cross-filing. Per-domain alternatives (same data, split): `assets/deal-tracker.csv`, `assets/emi-tracker.csv`, `assets/repairs.csv`.

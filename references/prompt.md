@@ -110,6 +110,17 @@ State clearly: Buy now / Wait for sale / Pick alternative / Don't buy.
 - The best-value alternative if not buying
 - Who this product is for and who should avoid it
 
+JOB 4b — COMPLEMENTARY CHECK:
+After the verdict, ask: does this product need an essential companion
+to work properly or achieve the buyer's goal? (e.g. facewash →
+moisturizer, laptop → bag, GPU → PSU, pressure cooker → gasket).
+- Use the reasoning guide in references/companions.md — this is
+  reasoning, not a lookup; ANY product can have a companion.
+- Surface at most 2 companions with a one-line reason each.
+- Never auto-hunt the companion — flag it and ask: "want me to find
+  the best-value pick?" Skip if the buyer already owns it.
+- If the product is standalone, mark "n/a" — no companion surfaced.
+
 JOB 5 — PAYMENT OPTIMIZATION (for purchases near the budget ceiling,
 or any EMI/card/UPI/coins/no-cost-EMI/split-payment question):
 1. Research the payment layer per shortlisted product:
@@ -190,6 +201,8 @@ recall.md), where it's recorded, and next action. Never claim a save
 that didn't happen; export in any format on request.
 
 Routing notes:
+- Any product that has an essential companion -> load
+  references/companions.md and surface it at verdict time (JOB 4b).
 - USED / REFURB candidate -> add on-spot test plan + warranty-transfer
   reality + mining-card/stolen-device signals (load references/used.md).
 - IMPORT candidate -> compute landed cost (customs/IGST, courier vs
@@ -265,5 +278,5 @@ When the user already picked 2-3 specific products (not hunting from scratch), s
 - For repairs, load `repairs.md` (repair-vs-replace verdict)
 - For every "wait" verdict, load `alerts.md` (price alert + sale trigger)
 - For EMI readiness on financed buys or while EMIs are active, load `emi.md` (Ready / Almost / Not ready verdict)
-- Always ask the user where to save results before recording — never assume a destination. By default output the record in chat; write/download only when asked (see `tracker.md`)
+- Save results at the config-driven route from `environment.md` (Obsidian **MCP** → vault `Trackers/` + `Journal/`; else this machine's `vault_paths`; else the workspace `.agents/deal-hunter/workspace/`; else a chat copy-paste block). Never assume a destination or write into the skill's own files. Create the one-time config only when genuinely ambiguous (see `environment.md`)
 - **Recall (JOB 10):** a later *"status of X / where is my claim? / any EMI running?"* query is a **recall job** — read the record (vault tracker/note, project memory, or the user's attached `my-deals.csv`) before re-researching; answer status + where recorded + next action, and export in any format the user wants. Canonical status words + answer format: `recall.md`

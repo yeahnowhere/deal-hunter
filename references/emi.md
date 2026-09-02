@@ -14,7 +14,7 @@ Two layers — read the **ledger**, link to the **detail**:
 - **Ledger (read this):** the user's active-EMI registry (e.g. an `EMI Tracker` note) — one flat row per active EMI + a summary block. This is what you load on every purchase.
 - **Detail (link, don't copy):** the user's per-device record (e.g. their devices note → EMI Schedule) holds the fine-grained installment tables (disbursement, per-instalment principal, due dates). Each ledger row links to its schedule.
 
-If no ledger exists, ask the user for their active EMIs (product, financier, principal, monthly EMI, tenure left, due date) and offer to create one — never assume a destination; output the record in chat by default, write/download only when asked.
+If no ledger exists, ask the user for their active EMIs (product, financier, principal, monthly EMI, tenure left, due date) and offer to create one — store it at the config-driven route from `environment.md` (the vault `Trackers/emi_file` via MCP or this machine's `vault_paths`, else the workspace), not in the skill's files; if no write access, output a copy-paste block.
 
 ## 2. Ledger schema
 

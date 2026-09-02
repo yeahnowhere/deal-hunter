@@ -1,0 +1,21 @@
+{
+  "storage": {
+    "prefer_mcp": true,
+    "fallback": "pc",
+    "vault_paths": {
+      "pc":     "C:\\Users\\<you>\\Obsidian\\Vault"
+    },
+    "mcp": {
+      "tracker_dir": "Trackers",
+      "notes_dir":   "Journal"
+    },
+    "workspace": {
+      "dir": "C:\\Users\\<you>\\.agents\\deal-hunter\\workspace"
+    }
+  },
+  "tracker_file": "Deal Tracker.md",
+  "emi_file":     "EMI Tracker.md",
+  "claim_file":   "Claim Tracker.md",
+  "repair_file":  "Repair Tracker.md",
+  "csv_file":     "my-deals.csv"
+}

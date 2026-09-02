@@ -36,7 +36,7 @@
   3. Price-check each: CH520's ₹4,499 is ~30% above its typical ₹3,500
   4. Review-check each: JBL review dates clustered (flag); Sony/Sennheiser spread out
   5. Weighted score: battery 3x, BT 2x → Sony CH520 (with price caveat) vs JBL
-- Output: **Pick alternative — JBL Tune 510BT** if budget is king; **Sony CH520** if battery matters most (wait for ~₹3,500). State both and why, per must-have weights. Then ask where to save.
+- Output: **Pick alternative — JBL Tune 510BT** if budget is king; **Sony CH520** if battery matters most (wait for ~₹3,500). State both and why, per must-have weights. Then save to the config-driven route (`environment.md`).
 - Gates summary: `Worthiness ✅ · Price ⚠️ (CH520 above typical) · Community ✅ · Review-integrity ⚠️ (JBL dates clustered)`
 
 ## Example 5: Pay Smart flips a verdict (financing layer)
@@ -51,14 +51,14 @@
   - **No-cost EMI**: SBI credit card 3/6 mo; HDFC/ICICI debit card 3-6 mo; cardless EMI via Snapmint/Instacred; EMI from ₹1,757/mo
   - **Split payment**: ₹10k cash + card/EMI for the remainder
   - Effective price ≈ ₹30,799 − ₹600 (Gold) − ₹3,700 (card offer) ≈ **₹26,499-27,099** — **under the ₹30k ceiling**
-- Output: **Buy now — Pixel 8** (at effective price ~₹27k with card offer + no-cost EMI). Sticker price alone said "wait"; the payment layer made it affordable today. Then ask where to save.
+- Output: **Buy now — Pixel 8** (at effective price ~₹27k with card offer + no-cost EMI). Sticker price alone said "wait"; the payment layer made it affordable today. Then save to the config-driven route (`environment.md`).
 - Gates summary: `Worthiness ✅ · Price ✅ (effective under ceiling) · Community ✅ · Review-integrity ✅ · Financing ✅ (no-cost EMI)`
 
 ## Example 6: EMI readiness flips a verdict
 
 - Input: "Am I ready to buy [phone] at ₹72,999 on 6-mo EMI (~₹12,167/mo)? My active [phone] EMI is ₹3,500/mo."
 - Steps: read the EMI ledger → committed ₹3,500/mo, ceiling ₹6,000/mo → headroom ₹2,500/mo. New monthly ≈ ₹12,167/mo → committed + new ≈ ₹15,667/mo, way over the ceiling.
-- Output: **Not ready.** New EMI busts the ₹6,000/mo ceiling ~2.6x. Options: wait until the current EMI closes (~6 months → full ₹6,000 headroom), pick a cheaper model whose EMI fits the ceiling, or raise the down payment. Numbers shown: ceiling ₹6,000, committed ₹3,500, new ₹12,167, shortfall ₹9,667. Then ask where to save.
+- Output: **Not ready.** New EMI busts the ₹6,000/mo ceiling ~2.6x. Options: wait until the current EMI closes (~6 months → full ₹6,000 headroom), pick a cheaper model whose EMI fits the ceiling, or raise the down payment. Numbers shown: ceiling ₹6,000, committed ₹3,500, new ₹12,167, shortfall ₹9,667. Then save to the config-driven route (`environment.md`).
 - Gates summary: `Worthiness ✅ · Price ✅ · Financing ❌ (ceiling busted 2.6x)`
 
 ## Example 7: Quick Hunt (≤₹1,000, batched gate)
@@ -78,3 +78,14 @@
 - Verdict logic: the old base is gone — waiting for a sub-₹80k Pixel 11 means waiting out the shortage, not the next sale. Sale drops now apply off ~₹90k. Shrinkflation noted: +₹10k for less RAM on Pro models hurts the value score.
 - Output: **Buy now if the need is real** (effective price via exchange/bank offer), else hold the Pixel 10 / consider refurb — NOT "wait for a correction". Targets reset to the post-shock base.
 - Gates summary: `Worthiness ✅ · Price ✅ (new base, verified) · Market ⚠️ (inflating — targets reset) · Community ✅`
+
+## Example 9: Complementary product surfacing
+
+- Input: "Find me the best facewash under ₹400. My skin is oily."
+- Steps:
+  1. Worthiness: asked — yes, needed for an oily-skin routine.
+  2. Analyze: pick the best-value facewash (salicylic-acid cleanser, gentle on barrier, well-reviewed in r/IndianSkincareAddicts).
+  3. **JOB 4b complementary check:** facewash strips moisture → **a light moisturizer is essential**, or the routine backfires (drier skin, more oil). User owns no moisturizer.
+  4. Surface, don't auto-hunt: flag it with a one-line reason and ask.
+- Output: **Buy the facewash now.** `## Complementary products` — **Moisturizer** — facewash strips natural oils; skipping it damages the skin barrier and makes oiliness worse. "Want me to find the best-value pick?" (no auto-hunt).
+- Gates summary: `Worthiness ✅ · Complement ✅ (moisturizer surfaced) · Community ✅ · Price ✅`

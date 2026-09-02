@@ -12,9 +12,9 @@ Load this file when a user's device **breaks, needs a repair, or arrives broken*
 The skill works for vault users and non-vault users alike — same schema, two ships:
 
 - **Vault users (rich, linked):** a rollup ledger (e.g. a `Repair Tracker` note) — one flat row per repair + a summary block (total OOP spend, open claims). The per-device detail tables (e.g. the user's devices note → Repairs) hold the fine-grained record; each ledger row links to its device row.
-- **Everyone (portable, zero-setup):** the skill's CSV template `assets/repairs.csv` (read-only template — the user copies it to keep their own record). By default output the repair row in chat; only write a file or offer a download when the user asks. This is the record for users without Obsidian.
+- **Everyone (portable, zero-setup):** the skill's CSV template `assets/repairs.csv` (read-only template — the user copies it to keep their own record). The user's actual repair record lives at the config-driven route from `environment.md` (vault `Trackers/repair_file` via MCP or this machine's `vault_paths`, else the workspace `.agents/deal-hunter/workspace/`); with no write access, output the repair row as a copy-paste block. This is the record for users without Obsidian.
 
-If no ledger exists, ask the user for the repair facts (date, device, issue, cost, warranty-covered?, claim status) and offer to create one — **never assume a destination**; output the record in chat by default, write/download only when asked.
+If no ledger exists, ask the user for the repair facts (date, device, issue, cost, warranty-covered?, claim status) and offer to create one — store it at the config-driven route from `environment.md`, never in the skill's files (no write access → copy-paste block).
 
 ## 2. Ledger schema
 

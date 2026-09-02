@@ -74,8 +74,11 @@ jobs:
                   problems.append(f"SKILL.md references missing file: {ref}")
 
           # --- 3. Leak scan: personal data must never ship ---
+          # Specific to this repo's real identifiers (Raspsec/Obseq/Windows drive
+          # roots) plus generic PII. Generic path fragments like C:\Users\<you>
+          # (placeholders) and Trackers//Journal/ (vault-relative doc defaults)
+          # are intentionally allowed.
           leak_patterns = [
-              r"C:\\Users",                      # Windows user paths
               r"D:\\",                           # Windows data drives
               r"\bObseq\b",                      # vault folder name
               r"\bRaspsec\b",                    # local account name
@@ -85,8 +88,6 @@ jobs:
               r"Order\s*(#|No\.?)?\s*[-\d]{6,}", # order IDs
               r"HAMMONDS",
               r"Project/Smart Shopping",         # vault paths
-              r"(^|/)Trackers/",
-              r"(^|/)Journal/",
               r"Resources/Web Library",
           ]
           scan_targets = []
@@ -94,7 +95,7 @@ jobs:
               p = os.path.join(root, name)
               if os.path.isfile(p):
                   scan_targets.append(p)
-          for sub in ("references", "assets"):
+          for sub in ("references", "assets", "scripts"):
               d = os.path.join(root, sub)
               if os.path.isdir(d):
                   for dp, _, fns in os.walk(d):
@@ -148,6 +149,8 @@ jobs:
                       rel = os.path.relpath(full, root).replace(os.sep, "/")
                       top = rel.split("/")[0]
                       if top in skip:
+                          continue
+                      if fn.endswith(".pyc") or "__pycache__" in rel:
                           continue
                       zf.write(full, f"deal-hunter/{rel}")
 
