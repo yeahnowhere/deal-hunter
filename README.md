@@ -61,7 +61,7 @@ Or download the latest `.skill` zip from **Releases** and upload it through your
 The skill saves your results automatically to a **config-driven route** — it never re-asks *"where do you want to save?"* every hunt. Set it up once:
 
 1. Open **`scripts/config.json`** in the skill's folder.
-2. Set **`storage.vault_paths.pc`** to the **absolute path of your Obsidian vault on this machine** (e.g. `D:\Documents\Personal\Obsidian\Obseq`), and `storage.workspace.dir` if you want a non-default workspace.
+2. Set **`storage.vault_paths.pc`** to the **absolute path of your Obsidian vault on this machine** (e.g. `C:\Users\<you>\Obsidian\Vault`), and `storage.workspace.dir` if you want a non-default workspace.
 3. Done — the AI reads that same `scripts/config.json` from the skill's scripts folder whether you use the skill via the web or the CLI. No script to run; no other setup.
 
 The save route is picked at runtime, in this order:
