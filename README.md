@@ -60,13 +60,9 @@ Or download the latest `.skill` zip from **Releases** and upload it through your
 
 The skill saves your results automatically to a **config-driven route** — it never re-asks *"where do you want to save?"* every hunt. Set it up once:
 
-```bash
-# create ~/.agents/deal-hunter/config.json if it doesn't exist (never overwrites)
-python scripts/resolve-config.py --init
-# (Windows:  py scripts/resolve-config.py --init )
-# feel free to edit the created config, or run:
-python scripts/resolve-config.py   # prints the resolved config path
-```
+1. Open **`scripts/config.json`** in the skill's folder.
+2. Set **`storage.vault_paths.pc`** to the **absolute path of your Obsidian vault on this machine** (e.g. `D:\Documents\Personal\Obsidian\Obseq`), and `storage.workspace.dir` if you want a non-default workspace.
+3. Done — the AI reads that same `scripts/config.json` from the skill's scripts folder whether you use the skill via the web or the CLI. No script to run; no other setup.
 
 The save route is picked at runtime, in this order:
 
@@ -75,7 +71,7 @@ The save route is picked at runtime, in this order:
 3. **Workspace** → writes to `.agents/deal-hunter/workspace/` (when no vault is reachable).
 4. **Chat** → if the agent can't write files, you get a copy-paste row + which file to paste it into.
 
-Key config fields (`~/.agents/deal-hunter/config.json`):
+Key config fields (`scripts/config.json`):
 
 - `storage.prefer_mcp` — use MCP automatically when an Obsidian MCP is connected (default `true`)
 - `storage.fallback` — route when no MCP is available: `pc` (use `vault_paths`) or `workspace`
@@ -83,7 +79,7 @@ Key config fields (`~/.agents/deal-hunter/config.json`):
 - `storage.mcp.tracker_dir` / `notes_dir` — vault-relative folders (defaults `Trackers` / `Journal`)
 - `storage.workspace.dir` — workspace path for the portable record
 
-An explicit instruction (*"save this to X"*) always overrides the configured route. The skill ships with a placeholder path — the example config uses `<you>`; your real paths live only in your own `config.json`, never in the skill.
+An explicit instruction (*"save this to X"*) always overrides the configured route. The skill ships with a placeholder path — `config.json` uses `<you>`; set `storage.vault_paths.pc` to your real path in the deployed/installed copy. Your real paths live only in your copy, never in the publicly shipped skill.
 
 ## Quick start
 
@@ -101,7 +97,7 @@ what's the status of <product>? / where is my claim?
 - **Nothing leaves your machine.** The skill researches the open web; all *your* records are saved via the config-driven route (your vault trackers, the workspace, or `my-deals.csv`) — never into the skill's own files.
 - **`my-deals.csv`** is the portable record - a single merged file (deal + claim + EMI + repair, one row per purchase) that any AI can read back on a later session.
 - On platforms where the agent can't write files, it gives you a **copy-paste row** to drop into your file.
-- The skill's own files and `scripts/config.example.json` are **templates** (with `<you>` placeholders) - never write targets and never your real paths.
+- The skill's `scripts/config.json` ships with `<you>` placeholders — set `storage.vault_paths.pc` to your real vault path in your installed copy. Never write your real paths into the skill's own files.
 
 ## Project layout
 
@@ -110,7 +106,7 @@ deal-hunter/
 ├── SKILL.md          # the skill - frontmatter tells the agent when to use it
 ├── references/       # playbooks the agent loads on demand
 ├── assets/           # read-only CSV templates (my-deals, deal-tracker, emi, repairs)
-├── scripts/          # config resolver (resolve-config.py) + example config
+├── scripts/          # storage config (config.json) — set storage.vault_paths.pc
 ├── README.md         # this file - repo-facing only, not part of the skill
 └── .github/          # CI (validate + release)
 ```

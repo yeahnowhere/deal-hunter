@@ -3,7 +3,7 @@
 Load this file when recording a hunt result or when the user asks "what's a fair price for X?" — the tracker is a personal record of real prices so future hunts never trust MRP strikethroughs.
 
 > [!important] Destination is environment-driven
-> This is the **suggested default format**, not a hardcoded save location. Storage is **config-driven and environment-aware** (see `environment.md`): the AI writes to the `Trackers/` index at `<vault>/Trackers/` (via Obsidian **MCP** when connected — vault-relative, works on any device — or the machine's per-device `vault_paths` path), or to the **workspace** record (`.agents/deal-hunter/workspace/`) for non-vault/web users. The user is asked only to create the one-time `deal-hunter.config.json` (or not at all for MCP). The skill's `assets/*.csv` are read-only templates, never write targets.
+> This is the **suggested default format**, not a hardcoded save location. Storage is **config-driven and environment-aware** (see `environment.md`): the AI reads the skill's `scripts/config.json`, then writes to the `Trackers/` index at `<vault>/Trackers/` (via Obsidian **MCP** when connected — vault-relative, works on any device — or the machine's per-device `vault_paths` path), or to the **workspace** record (`.agents/deal-hunter/workspace/`) for non-vault/web users. The skill's `assets/*.csv` are read-only templates, never write targets.
 
 ## Schema
 

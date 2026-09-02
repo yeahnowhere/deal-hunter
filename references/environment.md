@@ -4,14 +4,15 @@ Load this file at the start of any session, before answering "where should I sav
 
 **Why:** an Obsidian user may reach the same vault from multiple devices, and the vault's absolute filesystem path can differ per device. A config with one hardcoded path breaks everywhere else. The fix: **prefer MCP** (vault-relative paths, identical on any device) and keep **per-machine** paths only for direct local access.
 
-## Step 0 — Resolve the config (run the script, don't read prose)
+## Step 0 — Read the skill's `scripts/config.json`
 
-Run **`scripts/resolve-config.py`** — it returns the config file path (or exits non-zero if none exists). **The script output is authoritative**; this doc is human documentation only. Lookup it performs:
+Open the skill's **`scripts/config.json`** — it's the shipped storage config and lives in the skill's scripts folder, so you can read it the same way whether you're a CLI or a web/cloud agent. **Read the file directly; don't guess the user's paths.** It holds:
 
-1. `~/.agents/deal-hunter/config.json` — the canonical per-user home (survives any launch directory).
-2. `$PWD/deal-hunter.config.json` — convenience copy, if present.
+- `storage.vault_paths` — **per-machine** absolute vault paths (`pc` = the user's real vault path on this machine).
+- `storage.mcp.tracker_dir` / `notes_dir` — vault-relative tracker + note folders (defaults `Trackers` / `Journal`).
+- `storage.workspace.dir` — the workspace/portable record location.
 
-If nothing resolves, ask once to create the config — either run `scripts/resolve-config.py --init`, or copy `scripts/config.example.json` to `~/.agents/deal-hunter/config.json` — then it's deterministic forever.
+The master ships `scripts/config.json` with a `<you>` placeholder; on a live install the user has set `storage.vault_paths.pc` (and `workspace.dir`) to their real absolute paths. If every path is still a placeholder, fall back to MCP or workspace — never fabricate a vault path.
 
 ## The environment probe (run in this order, don't ask the user)
 
@@ -20,7 +21,7 @@ If nothing resolves, ask once to create the config — either run `scripts/resol
 3. **Can write to a working directory (web/workspace or non-Obsidian CLI)?** → **Workspace route**.
 4. **Cannot write files at all?** → **Chat route** (copy-paste block).
 
-State the detected route briefly to the user (one line), then store there. Only ask to create the config when genuinely ambiguous, and only once.
+State the detected route briefly to the user (one line), then store there.
 
 ## The three storage routes
 
@@ -54,9 +55,9 @@ Routes 1 and 2 reach the **same actual tracker files** — one source of truth a
 
 **Path resolution:** use the user-home default (`C:\Users\<you>\.agents\deal-hunter\workspace`) unless `storage.workspace.dir` or a web workspace sets it explicitly.
 
-## Config schema — `deal-hunter.config.json`
+## Config schema — `scripts/config.json`
 
-One-time user config under the user's data home (user data — never a skill file, never deployed in the skill zip). Schema (paths are per-machine examples — replace `<you>`):
+The shipped storage config, read from the skill's scripts folder. Schema (paths are per-machine examples — replace `<you>`):
 
 ```json
 {
@@ -97,10 +98,10 @@ One-time user config under the user's data home (user data — never a skill fil
 
 - **Prefer MCP when connected** — it's device-independent and the user's stated preference. Config-gating MCP off is never needed unless the user says so.
 - **Config is optional for MCP users** — the vault-relative `tracker_dir`/`notes_dir` have defaults (`Trackers`, `Journal`).
-- **Config is never shipped with the skill** — it's user data in their working directory.
+- **The skill ships `scripts/config.json` with a `<you>` placeholder** — the deployed/installed copy holds the user's real `vault_paths.pc` and `workspace.dir`; never show or leak those real paths back into the public skill.
 - **An explicit user instruction ("save this to X") always overrides the config.**
 - **The skill's `assets/*.csv` are read-only templates** the user copies once into their chosen storage — never write targets.
-- **On first run with no config:** state the detected route; if ambiguous, ask once to create the config, then it's deterministic. Never re-ask every hunt.
+- **On first run, read `scripts/config.json`:** if every path is still a placeholder, state the detected route and fall back to MCP or workspace; never invent a vault path or re-ask every hunt.
 
 ## Pairings
 
