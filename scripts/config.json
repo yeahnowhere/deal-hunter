@@ -10,12 +10,16 @@
       "notes_dir":   "Journal"
     },
     "workspace": {
-      "dir": "C:\\Users\\<you>\\.agents\\deal-hunter\\workspace"
+      "dir": "C:\\Users\\<you>\\.agents\\skills\\deal-hunter\\workspace",
+      "tracker_dir": "trackers",
+      "notes_dir":   "notes"
     }
   },
   "tracker_file": "Deal Tracker.md",
   "emi_file":     "EMI Tracker.md",
   "claim_file":   "Claim Tracker.md",
   "repair_file":  "Repair Tracker.md",
-  "csv_file":     "my-deals.csv"
+  "csv_file":     "my-deals.csv",
+  "restock_file": "Household & Restock Tracker.md",
+  "restock_csv":  "restock.csv"
 }

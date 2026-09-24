@@ -7,14 +7,14 @@ Tracking only pays off if the record can be **read back later**. This playbook c
 
 - A deal's worth isn't proven until it's used, and its claim/EMI/repair lifecycle runs for months after the verdict.
 - Web/cloud agents **can't write skill files** and often can't write any file; chat history resets between chats.
-- So the **portable truth is the user's own merged `my-deals.csv`** (one row per purchase: deal + claim + EMI + repair) plus the AI platform's memory. The skill's `assets/*.csv` are **read-only templates** the user copies once.
+- So the **portable truth is the user's own merged `my-deals.csv`** (one row per purchase: deal + claim + EMI + repair, plus a restock pointer) plus the AI platform's memory. The skill's `assets/*.csv` are **read-only templates** the user copies once.
 
 ## Record — one row per purchase
 
 1. Save to the config-driven route (MCP / PC vault path / workspace / chat) per `environment.md` — don't re-ask "where to save?" every hunt (see SKILL.md "Saving Results").
 2. **Vault/local agents:** append a row to the user's tracker note (`tracker.md` schema) or their own `my-deals.csv`. One row per purchase; link the note where detail lives.
 3. **Web/cloud agents (can't write files):** output the row as a **copy-paste block** (a CSV row or a markdown table line) and tell the user which file to paste it into. **Never claim it was saved.**
-4. **Merged schema (everything in one file):** `assets/my-deals.csv` — deal + claim + EMI + repair columns on one row, so recall has the full lifecycle without cross-filing. Per-domain alternatives (same data, split): `assets/deal-tracker.csv`, `assets/emi-tracker.csv`, `assets/repairs.csv`.
+4. **Merged schema (everything in one file):** `assets/my-deals.csv` — deal + claim + EMI + repair columns on one row, plus **restock pointer columns** (`Restock status` / `Restock detail` / `→ Restock note`), so recall has the full lifecycle without cross-filing. Per-domain alternatives (same data, split): `assets/deal-tracker.csv`, `assets/emi-tracker.csv`, `assets/repairs.csv`. **Restock lots** live in their own record (`assets/restock.csv`, or the tracker-folder restock ledger — see `restock.md`), never in the deal rows; the merged row only *points* to the ledger (lot # + benchmark + where it lives).
 5. The skill's own files are never write targets.
 
 ## Recall — answer from the record
@@ -50,6 +50,11 @@ Tracking only pays off if the record can be **read back later**. This playbook c
 | Repair | `done` | Repaired, paid, resolved. Next: satisfaction/duration note |
 | Repair | `warranty` | Repaired under warranty (covered). Next: keep invoice for the rest of warranty |
 | Repair | `oow` | Out of warranty (paid OOP). Next: repair-vs-replace verdict (see `repairs.md`) |
+| Restock lot | `ordered` | Rebuy placed, not delivered. Next: delivery check → mark `in use` |
+| Restock lot | `in use` | The current lot being consumed. Next: when it runs out, `finished <date>` |
+| Restock lot | `finished` | Lot consumed. **Next: rebuy due** (a restock, per `restock.md` — not a new hunt) |
+
+Restock recall reads the **Product Master** ("any restock due?", "how many times have I bought X?"): answer product, latest price, per-unit benchmark, restock #, current lot status, and the canonical link — then either "rebuy at benchmark ≤ ₹X" or "no, all `in use`/not tracked". When reading a **merged `my-deals.csv` row**, the `Restock status` / `→ Restock note` columns give the current lot status + where the ledger lives; the full lot history still comes from the restock file.
 
 ## Export
 

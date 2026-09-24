@@ -3,7 +3,10 @@
 Load this file when recording a hunt result or when the user asks "what's a fair price for X?" — the tracker is a personal record of real prices so future hunts never trust MRP strikethroughs.
 
 > [!important] Destination is environment-driven
-> This is the **suggested default format**, not a hardcoded save location. Storage is **config-driven and environment-aware** (see `environment.md`): the AI reads the skill's `scripts/config.json`, then writes to the `Trackers/` index at `<vault>/Trackers/` (via Obsidian **MCP** when connected — vault-relative, works on any device — or the machine's per-device `vault_paths` path), or to the **workspace** record (`.agents/deal-hunter/workspace/`) for non-vault/web users. The skill's `assets/*.csv` are read-only templates, never write targets.
+> This is the **suggested default format**, not a hardcoded save location. Storage is **config-driven and environment-aware** (see `environment.md`): the AI reads the skill's `scripts/config.json`, then writes to the `Trackers/` index at `<vault>/Trackers/` (via Obsidian **MCP** when connected — vault-relative, works on any device — or the machine's per-device `vault_paths` path), or to the **workspace** record (in-skill `workspace/` → `trackers/` + `notes/`) for non-vault/web users. The skill's `assets/*.csv` are read-only templates, never write targets.
+
+> [!warning] Two-folder split
+> `Trackers/` (or workspace `trackers/`) holds **only** the index files. Every **individual product note** goes to `Journal/` (or workspace `notes/`) — never into the tracker folder. The `→ Note` cell links to that note wherever it lives.
 
 ## Schema
 
@@ -30,7 +33,7 @@ Load this file when recording a hunt result or when the user asks "what's a fair
 
 (Canonical vocabulary shared with `recall.md` — one word, one meaning across all files.)
 
-**Recall normalization:** when a later *"status of X?"* question is answered from the record, normalize these words to the canonical vocabulary in `recall.md` (`noted` / `waiting` / `buying` / `bought` / `skipped` / `cancelled`); answer with product, date, effective price, status, where it's recorded, and next action. The merged `assets/my-deals.csv` (deal + claim + EMI + repair on one row) is the everything-in-one portable schema for users who keep a single file.
+**Recall normalization:** when a later *"status of X?"* question is answered from the record, normalize these words to the canonical vocabulary in `recall.md` (`noted` / `waiting` / `buying` / `bought` / `skipped` / `cancelled`); answer with product, date, effective price, status, where it's recorded, and next action. The merged `assets/my-deals.csv` (deal + claim + EMI + repair + a restock pointer on one row) is the everything-in-one portable schema for users who keep a single file.
 
 After a bought product gets real use, append a **satisfaction rating** (`HIGH`/`MED`/`LOW`) and the **"worth it after extended use?"** verdict to the row — it calibrates future value scores. If it breaks or arrives wrong, log the **claim status** on the row (warranty filed / NCH / e-Daakhil) so the escalation isn't forgotten (see `claims.md`). If a device gets **repaired**, log the repair (cost, warranty-covered?, claim outcome) and run **repair-vs-replace** before replacing it (see `repairs.md`) — a repair history is the durability truth behind the next value score.
 
@@ -85,7 +88,7 @@ After a hunt, record a short note like:
 - Append one row per product researched, newest at top
 - Re-researching a product = a **new row cross-linked to the prior row** (history preserved); never overwrite an old row
 - Link each row to the note/clipping where the detail lives (→ Note); the tracker indexes, it never duplicates the research
-- Write to the config-driven destination (vault `Trackers/` via MCP or this machine's `vault_paths`, else the workspace `.agents/deal-hunter/workspace/`) per `environment.md` — ask to create the one-time config only when needed; an explicit "save this to X" overrides
+- Write to the config-driven destination (vault `Trackers/` via MCP or this machine's `vault_paths`, else the workspace `workspace/` (`trackers/` + `notes/`)) per `environment.md` — ask to create the one-time config only when needed; an explicit "save this to X" overrides
 - Write the decision **before** the purchase, not after
 - For financed purchases, record the **effective price** and the pay path, not just the sticker price
 - If a "Wait" verdict is tied to a sale, note the sale name + expected date in the Status/Decision, and record the **price alert** set (target price + tool) in the Alert/Claim column

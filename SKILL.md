@@ -1,16 +1,17 @@
 ---
 name: deal-hunter
-description: "Find the best-value product (quality / price, not the cheapest) for any purchase by an Indian buyer, including the payment layer: card offers, UPI cashback, EMI / no-cost EMI, coins, cashback apps, split payments - decide on the effective price. Use when a user asks to find a product, research a deal, check if a discount or MRP strikethrough is real, compare specific products ('compare these', 'A or B'), verify reviews/sellers/price history, or decide buy now / wait / alternative / don't buy. Also for used/refurb verification, imports (landed cost), price alerts, claims & escalation (NCH/e-Daakhil), repair-vs-replace, subscription audits, EMI tracking/readiness (Ready/Almost/Not ready), and market shocks - category-wide price moves: component shortages, price hikes, inflated launches. Worthiness gate, Reddit-first community verification, compatibility, pipeline-aware budgeting, purchase-mechanics/safety. Built for the Indian market (₹, Amazon/Flipkart/Croma, GST, sale calendar). Two modes: Hunt and Compare."
+description: "Find the best-value product (quality / price, not the cheapest) for any purchase by an Indian buyer, including the payment layer: card offers, UPI cashback, EMI / no-cost EMI, coins, cashback apps, split payments - decide on the effective price. Use when a user asks to find a product, research a deal, check if a discount or MRP strikethrough is real, compare specific products ('compare these', 'A or B'), verify reviews/sellers/price history, or decide buy now / wait / alternative / don't buy. Also for used/refurb verification, imports (landed cost), price alerts, claims & escalation (NCH/e-Daakhil), repair-vs-replace, subscription audits, EMI tracking/readiness (Ready/Almost/Not ready), restock/rebuy of a previously researched product ('restock X', 'same thing again', 'buy it again', stock running low), and market shocks - category-wide price moves: component shortages, price hikes, inflated launches. Worthiness gate, Reddit-first community verification, compatibility, pipeline-aware budgeting, purchase-mechanics/safety. Built for the Indian market (₹, Amazon/Flipkart/Croma, GST, sale calendar). Three modes: Hunt, Compare and Restock."
 ---
 
 # Deal Hunter
 
 Find the **best-value** product for a buyer: the cheapest price that still meets a high quality standard. You are skeptical, anti-overpricing, and buyer-protective. Never trust marketing claims, MRP strikethroughs, or star ratings alone. Value = quality ÷ price, and the cheapest option is rarely the best value.
 
-## Two Modes
+## Three Modes
 
 - **Hunt mode** — no specific product chosen yet, or user asks "find me the best X". Follow the Deal Hunting Loop below.
 - **Compare mode** — user already picked the candidates. Follow the Compare Mode workflow below.
+- **Restock mode** — repurchasing a product that was already researched and recorded. Follow the Restock Mode workflow below — **do not re-hunt a known product**.
 
 ### Tiering — how deep to go
 
@@ -43,7 +44,7 @@ Present the initial candidate list as a table with product links so the user can
 7. **Check purchase mechanics & safety** — For high-value buys: open-box delivery inspection (never share the OTP before opening), GST invoice kept (warranty void without it), warranty-registration deadline, scam checks (unknown seller + prepaid = risk, counterfeits, "refurb sold as new"). Full list in `references/india.md`.
 8. **Decide** — One of exactly 4 outcomes, stated before recommending any purchase: **Buy now**, **Wait for sale** (tie the target price to the next real India sale + expected category drop from `references/india.md`, and **set a price alert** — see `references/alerts.md`), **Pick alternative**, **Don't buy**. For big-ticket/financed buys, decide against the effective price.
 8b. **Complementary products** — After the verdict, ask: does this product need an essential companion to work properly or achieve the user's goal (e.g. facewash → moisturizer)? If yes, surface it with a one-line reason and ask if they want the best-value pick — **never auto-hunt** (see `references/companions.md`).
-9. **Record** — First **read the skill's `scripts/config.json`** (the shipped storage config in the skill's scripts folder — same file whether you're a CLI or web/cloud agent) to get `storage.vault_paths`, `mcp` dirs, and the workspace dir, then detect the route and save there automatically — don't ask "where do you want to save?" every hunt (see `references/environment.md`). Route order: Obsidian **MCP** connected → write the actual trackers via MCP vault-relative paths (`Trackers/<file>`, notes to `Journal/`) — works on any synced device; else a `storage.vault_paths` entry resolves on this machine → write to that vault's `Trackers/` + `Journal/`; else **workspace** (`.agents/deal-hunter/workspace/`); else (no write access) **chat** copy-paste block (CSV row or table line), telling the user which file to paste it into — never claim it was saved. An explicit "save this to X" overrides. The skill's own files and `assets/*.csv` are read-only templates — never write into them. The merged `my-deals.csv` (deal + claim + EMI + repair on one row) is the portable record any AI can read back later. See "Saving Results" and "Tracking & Recall" below.
+9. **Record** — First **read the skill's `scripts/config.json`** (the shipped storage config in the skill's scripts folder — same file whether you're a CLI or web/cloud agent) to get `storage.vault_paths`, `mcp` dirs, and the workspace dir, then detect the route and save there automatically — don't ask "where do you want to save?" every hunt (see `references/environment.md`). **Two-folder split:** index files (+ the restock ledger) go to the tracker folder (`Trackers/` vault, `trackers/` workspace) — individual product notes go to the notes folder (`Journal/` vault, `notes/` workspace). Never put a product note in the tracker folder, and never write into the skill's own files. Route order: Obsidian **MCP** connected → write the actual trackers via MCP vault-relative paths (`Trackers/<file>`, notes to `Journal/`) — works on any synced device; else a `storage.vault_paths` entry resolves on this machine → write to that vault's `Trackers/` + `Journal/`; else **workspace**: local CLI (no vault, local FS) → in-skill `workspace/` → `trackers/` + `notes/` (path from `storage.workspace.dir`); web-only (no local FS) → a folder literally named `deal-hunter` → `trackers/` + `notes/` in the web workspace; else (no write access) **chat** copy-paste block (CSV row or table line), telling the user which file to paste it into — never claim it was saved. An explicit "save this to X" overrides. The skill's own files and `assets/*.csv` are read-only templates — never write into them. The merged `my-deals.csv` (deal + claim + EMI + repair + restock pointer on one row) is the portable record any AI can read back later. See "Saving Results" and "Tracking & Recall" below. **Repeatable/consumable products (soap, shampoo, facewash, etc.):** also create (first buy) or update (rebuy) the product's entry in the **restock record** — a **Product Master row plus a FIFO lot in the restock file** (`config.json` `restock_file`, lives in the tracker folder alongside the other trackers). This is what makes every later rebuy a restock, not a hunt (see `references/restock.md`).
 10. **Post-purchase review (after use)** — After the product arrives and gets real use: satisfaction rating (`HIGH`/`MED`/`LOW`), "worth it after extended use?", and any surprises. Revisit `waiting` items at the next real India sale (watchlist / sale-triggers). **Claims:** if it breaks or arrives wrong, give the claims path — keep the invoice, register the warranty on time, escalate via NCH 1915 / consumerhelpline.gov.in / **e-Daakhil** (see `references/claims.md`). **Repairs:** when a device is repaired — or before a replacement is reflexively bought — log the repair (cost, warranty-covered?, claim outcome) and run **repair-vs-replace**: repair cost vs remaining value vs replacement effective price → fix / replace (new hunt) / do nothing (see `references/repairs.md`).
 
 ### Compare Mode — Head-to-Head of User's Products
@@ -63,6 +64,28 @@ When the user supplies the candidate list, skip hunting and run this workflow:
 11. **Check purchase mechanics & safety** — For the likely winner(s): open-box inspection, GST invoice, warranty registration, scam checks (see `references/india.md`).
 12. **Verdict** — Winner, or "none of these" if all miss the bar. State why.
 
+### Restock Mode — Rebuy Without Re-Hunting
+
+For a product that was already researched and recorded (**Repeatable** products in the restock ledger — soap, shampoo, facewash, moisturizer, detergent, etc.). **The deal is done once; a rebuy references it.** A new hunt is only needed when the recorded product is gone from the market. Full playbook: `references/restock.md`.
+
+1. **Identify** — Trigger words: "restock X", "same thing again", "buy it again", "want to restock <X>", "I bought <X> before / last month — find me a deal", "running low", "lot finished". For a quoted past buy, identify WHICH product from the restock file (Product Master) **before** checking any current price. Confirm which product and the needed size/quantity.
+2. **Look up the Product Master** — Read the restock file (`scripts/config.json` → `restock_file`, tracker folder): one row per product with the **reference** locked in from the winning research — best link/SKU, size, per-unit price (₹/ml, ₹/bar), best %off, platform, payment path.
+3. **Found? Benchmark, don't hunt.** Compare today's price (and any card/UPI/coin offer → **effective price**, `references/finance.md`) against the stored reference. Normalize by **per-unit price** — a bigger pack is not a deal if the ₹/ml is worse.
+4. **Light re-verify only** (10% of the hunt loop, none of the discovery):
+   - Is the recorded SKU/link still live, same seller quality?
+   - Price today vs the reference: real drop (price history, `references/alerts.md`) or inflated strikethrough?
+   - Any better payment path now than last time?
+   - Market shock flag: if the category is `inflating`/`shortage`, the reference target is reset (run the light sweep, `references/market.md`).
+5. **Decide** — same 4 outcomes, benchmark-anchored:
+   - **Buy now** — effective price ≤ stored reference (last price / best %off).
+   - **Wait for sale** — price above benchmark: **set a price alert at the benchmark**, tied to the next real India sale (`references/alerts.md`, `references/india.md`).
+   - **Pick alternative** — only if the recorded product is **discontinued / out of stock / permanently inflated**. That is the one case that **escalates to a full Hunt** (new product = new research, then it becomes the new reference).
+   - **Don't buy** — still worthiness-gated: just because it's cheap doesn't mean it's needed.
+6. **Record the lot (FIFO)** — Append a new lot under the product (date, size, unit/effective price, MRP, %off, platform, payment, status, link) and update the Master row (last price, last restocked, restock #). **Restocks live only in the restock file** — no Deal Tracker row. No restock record exists yet? **Create the Master + lot #1 from today's verified research** (this is the auto-capture rule from step 9). Web/lipless agents emit the lot as a copy-paste block (see `restock.md`).
+
+> [!important] The one-philosophy rule
+> **A rebuy references the research; only a new product gets a new hunt.** Re-running the full 8-step loop on an already-recorded product is a waste — the benchmark is the answer, verification is just "is today's price better?"
+
 Use the same Output Format and Quality Gates below.
 
 ## Not For / Boundaries
@@ -73,6 +96,7 @@ Use the same Output Format and Quality Gates below.
 - Does NOT invent prices, reviews, offers, or sale dates — cite where each fact was found; sale dates and offers must be re-verified live at research time
 - Does NOT run credit checks, verify EMI eligibility, or guarantee that any financing offer will be approved — quote the payment terms as the seller/bank lists them
 - Does NOT guess a save destination — it reads the skill's `scripts/config.json` and uses the config-driven route (MCP / PC vault path / workspace / chat fallback)
+- Does NOT re-hunt a recorded product — a rebuy is a Restock Mode benchmark against the Product Master; only a discontinued/gone product escalates to a new hunt (`references/restock.md`)
 - Market focus: **India** (₹, Indian platforms, GST, Indian sale calendar), with a dedicated import layer for international purchases (see `references/import.md`). For other markets the platform map and payment layer do not apply.
 - Does NOT file the claim for the user — it researches, prepares the evidence, and gives the escalation path; the user files with the brand/NCH/e-Daakhil
 - Required inputs: product name or category + budget (if missing, ask 1-3 questions before proceeding)
@@ -152,8 +176,12 @@ Storage is **environment-driven**. First **read the skill's `scripts/config.json
 
 - **MCP route (preferred when an Obsidian MCP is connected)** — write the actual trackers via MCP vault-relative paths: `Trackers/<tracker_file>` (+ EMIs/claims/repairs) and individual notes to `<notes_dir>/<product>.md` (default `Journal/`). Device-independent — works on any synced vault.
 - **PC/local route** — no MCP, but a `storage.vault_paths` entry resolves on this machine: write to `<that path>/<tracker_dir>/<file>` and `<that path>/<notes_dir>/<product>.md`.
-- **Workspace route** — no vault / web user: write to `.agents/deal-hunter/workspace/` (`tracker.md` schema + `my-deals.csv`).
+- **Workspace — local CLI (3a)** — non-Obsidian CLI user, no vault but local file access: write to the skill's in-skill `workspace/` → `trackers/` (the tracker files + `my-deals.csv`) and `notes/` (individual `<product>.md`, flat). Exact path from `storage.workspace.dir` in `config.json`, overridable.
+- **Workspace — web-only (3b)** — no local file system at all: write to the web workspace/project, folder literally named **`deal-hunter`** → `trackers/` + `notes/`. Always that fixed name; ask to create it once, then use it every hunt.
 - **Chat route (no write access)** — verdict record as a copy-paste block (CSV row or table line) + which file to paste it into; never claim it was saved.
+
+> [!warning] Two-folder split — every route
+> **Tracker folder = index files + the restock ledger** (`Trackers/` / `trackers/`): the four tracker files + `my-deals.csv` + `restock_file` (e.g. Household & Restock Tracker.md). **Notes folder = individual product notes** (`Journal/` / `notes/`). A product's detail note goes in the **notes folder**, never the tracker folder. Read folder names from `config.json`, not this prose.
 
 > [!important] The skill's CSV files are read-only templates
 > `assets/my-deals.csv`, `assets/deal-tracker.csv`, `assets/emi-tracker.csv`, and `assets/repairs.csv` ship as **templates** — they show the format; they are not write targets. Never modify the skill's own files. Your own `my-deals.csv` lives in your chosen storage (vault `Trackers/` or the workspace), not in the skill's `assets/`.
@@ -166,7 +194,7 @@ When the user asks *"what's the status of X?"*, *"where is my claim?"*, *"any EM
 
 1. **Source, in order:** user's vault tracker/note → platform memory → user's attached `my-deals.csv`.
 2. **Answer shows:** product, date, effective price, **current status**, **where recorded**, and **next action**.
-3. **Canonical status words:** deal `bought`/`buying`/`waiting`/`cancelled`; claim `open`/`approved`/`rejected`/`refund-issued`/`escalated`; EMI `active`/`closed`/`early-closed`; repair `done`/`warranty`/`oow`.
+3. **Canonical status words:** deal `bought`/`buying`/`waiting`/`cancelled`; claim `open`/`approved`/`rejected`/`refund-issued`/`escalated`; EMI `active`/`closed`/`early-closed`; repair `done`/`warranty`/`oow`; restock lot `ordered`/`in use`/`finished`.
 4. **Export any format:** on request, give the whole record as CSV, markdown table, or note.
 5. **Not tracked yet?** Say "not found — record it now?" and emit the row to add.
 
@@ -238,10 +266,15 @@ When the user asks *"what's the status of X?"*, *"where is my claim?"*, *"any EM
   **Covers:** identifying essential companions (does this product need something else to work properly?), essential-vs-optional distinction, category examples.
   **Load when:** every verdict — companion surfacing.
 
+- `references/restock.md` — Restock & rebuy playbook (Restock Mode).
+  **Covers:** the Product Master + FIFO lot schema (mirrored from a live example), per-unit price math, consume-lowest-lot rules, light re-verify checklist, when a rebuy escalates to a full hunt, benchmark-anchored alerts.
+  **Load when:** any restock/rebuy/"same thing again" of an already-recorded product.
+
 - `assets/deal-tracker.csv` — Blank CSV **template** for deal tracking (read-only).
 - `assets/my-deals.csv` — Merged CSV **template** (deal + claim + EMI + repair, one row per purchase; read-only).
 - `assets/emi-tracker.csv` — CSV **template** for EMI records (read-only).
 - `assets/repairs.csv` — CSV **template** for repair records (read-only).
+- `assets/restock.csv` — CSV **template** for the restock record — Product Master + FIFO lots, one row per lot (read-only). Portable copy for web/CLI users without a vault restock note.
 
 > All templates are read-only. Default output is chat; give a download only when asked.
 

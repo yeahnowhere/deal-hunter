@@ -25,10 +25,10 @@ you use it?"). One batched gate per multi-item request, never per item.
 Restate the worthiness verdict (worth it / not worth it) in the final
 answer.
 
-PIPELINE ORDER: JOB 0–4 always run (core). JOB 5–10 are conditional
+PIPELINE ORDER: JOB 0–4 always run (core). JOB 5–11 are conditional
 modules — run each when its trigger matches (financing, purchase
-mechanics, new spend, post-purchase, EMIs active, recall). When a
-trigger doesn't fire, skip cleanly and mark it "n/a" in the gates
+mechanics, new spend, post-purchase, EMIs active, recall, restock).
+When a trigger doesn't fire, skip cleanly and mark it "n/a" in the gates
 summary — never silent omission.
 
 JOB 1 — PRICE RESEARCH (if given a product):
@@ -200,7 +200,35 @@ product, date, effective price, current status (canonical words from
 recall.md), where it's recorded, and next action. Never claim a save
 that didn't happen; export in any format on request.
 
+JOB 11 — RESTOCK / REBUY (on "restock X", "same thing again", "buy it
+again", "want to restock <X>", "I bought <X> before / last month — find
+me a deal", "running low", "lot finished"):
+A REBUY OF AN ALREADY-RECORDED PRODUCT IS NOT A HUNT. READ THE RECORD
+FIRST: for any "bought this before" query, the restock file
+(scripts/config.json -> restock_file, tracker folder; e.g. the Household &
+Restock Tracker) identifies WHICH product and its Product Master row.
+Look it up before checking any current price. Load
+references/restock.md and reference the stored benchmark (link/SKU,
+size, per-unit price, best %off, platform, payment path):
+1. Light re-verify ONLY: same SKU live? today's price vs benchmark a
+   real drop (price history)? any better card/UPI/coin offer now
+   (effective price, JOB 5)? category under a price shock (market.md)?
+2. Verdict, benchmark-anchored: BUY NOW if effective price <= stored
+   reference; WAIT + price alert AT the benchmark if above; PICK
+   ALTERNATIVE only if the recorded product is discontinued/OOS/
+   permanently inflated -> then run a full Hunt for the replacement;
+   DON'T BUY if over-stocked (worthiness).
+3. Record the FIFO lot under the product in the restock file (restocks
+   live ONLY there, never a Deal Tracker row or a new hunt). No restock
+   entry exists yet? AUTO-CREATE the Product Master + lot #1 from this
+   buy's verified research (step 9's auto-capture rule).
+Never re-run the full 8-step loop on a product that is already
+benchmarked in the restock record.
+
 Routing notes:
+- REBUY / RESTOCK of a recorded product -> run JOB 11 (benchmark against
+  the Product Master, light re-verify only) with references/restock.md —
+  never the full JOB 1-4 loop. New / unknown product -> normal hunt.
 - Any product that has an essential companion -> load
   references/companions.md and surface it at verdict time (JOB 4b).
 - USED / REFURB candidate -> add on-spot test plan + warranty-transfer
@@ -278,5 +306,6 @@ When the user already picked 2-3 specific products (not hunting from scratch), s
 - For repairs, load `repairs.md` (repair-vs-replace verdict)
 - For every "wait" verdict, load `alerts.md` (price alert + sale trigger)
 - For EMI readiness on financed buys or while EMIs are active, load `emi.md` (Ready / Almost / Not ready verdict)
-- Save results at the config-driven route from `environment.md` (Obsidian **MCP** → vault `Trackers/` + `Journal/`; else this machine's `vault_paths`; else the workspace `.agents/deal-hunter/workspace/`; else a chat copy-paste block). Never assume a destination or write into the skill's own files. Create the one-time config only when genuinely ambiguous (see `environment.md`)
+- Save results at the config-driven route from `environment.md` (Obsidian **MCP** → vault `Trackers/` + `Journal/`; else this machine's `vault_paths`; else the workspace `workspace/` → `trackers/` + `notes/`; else a chat copy-paste block). **Two-folder split:** tracker folder = index files + the restock ledger; individual product notes go to the notes folder (`Journal/` / `notes/`), never the tracker folder. Never assume a destination or write into the skill's own files. Create the one-time config only when genuinely ambiguous (see `environment.md`)
 - **Recall (JOB 10):** a later *"status of X / where is my claim? / any EMI running?"* query is a **recall job** — read the record (vault tracker/note, project memory, or the user's attached `my-deals.csv`) before re-researching; answer status + where recorded + next action, and export in any format the user wants. Canonical status words + answer format: `recall.md`
+- **Restock (JOB 11):** a *"restock X / same thing again"* of a **recorded** product is a **benchmark job** — load `restock.md`, read the Product Master, light re-verify against the stored reference, and record the FIFO lot (restock file only). Only a discontinued/gone product escalates to a full Hunt.

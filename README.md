@@ -22,7 +22,8 @@ Works with any AI agent that supports skills (Agent Skills-compatible tools).
 | **Claims & warranty** | Invoice kept, warranty-registration deadlines, escalation: brand → NCH 1915 → consumerhelpline.gov.in → e-Daakhil |
 | **Repair tracking** | Every repair logged; **repair-vs-replace** (fix / replace / do nothing) before spending |
 | **Subscription audit** | Recurring-spend inventory with worthiness per subscription |
-| **Record & recall** | One row per purchase (deal + claim + EMI + repair), then *"what's the status of X?"* is answered **from the record**, not by re-researching |
+| **Restock / rebuy** | Researched once, stocked forever — a rebuy reads the Product Master (per-unit benchmark) instead of re-hunting; every buy logs a FIFO lot |
+| **Record & recall** | One row per purchase (deal + claim + EMI + repair + restock pointer), then *"what's the status of X?"* is answered **from the record**, not by re-researching |
 
 ## What it does NOT do
 
@@ -39,6 +40,7 @@ hunt → verify hard → score & compare → pay smart (effective price)
   → pipeline budget (out + queued + EMI + new) → verdict
   → record (config-driven route: MCP → local vault → workspace → chat)
   → recall (later "status of X?" answered from the record)
+  → restock (rebuy of a recorded product = benchmark check, not a new hunt)
 ```
 
 Verdicts are exactly one of: **Buy now / Wait for sale / Pick alternative / Don't buy** - with a target price, the next real India sale, the best alternative, and a purchase-mechanics + safety note for the recommended buy.
@@ -48,7 +50,7 @@ Verdicts are exactly one of: **Buy now / Wait for sale / Pick alternative / Don'
 The skill is a folder with a `SKILL.md` — copy it into your agent's skills directory (or upload the zip):
 
 ```bash
-git clone https://github.com/johnsstalk/deal-hunter.git
+git clone https://github.com/yeahnowhere/deal-hunter.git
 cp -r deal-hunter /path/to/your-agent/skills/
 ```
 
@@ -68,8 +70,15 @@ The save route is picked at runtime, in this order:
 
 1. **Obsidian MCP connected** → writes the trackers to your vault by vault-relative path (`Trackers/<file>`, notes in `Journal/`) — works on any synced device. *(Nothing to configure.)*
 2. **Local vault path** → writes to `<vault_paths.pc>/<tracker_dir>/…` and `<…>/<notes_dir>/…`.
-3. **Workspace** → writes to `.agents/deal-hunter/workspace/` (when no vault is reachable).
-4. **Chat** → if the agent can't write files, you get a copy-paste row + which file to paste it into.
+3. **Workspace — local CLI** → writes to the skill's in-skill `workspace/` (`trackers/` + `notes/`); path from `storage.workspace.dir` (default, overridable).
+4. **Workspace — web-only** → writes to the web workspace/project, folder literally named **`deal-hunter`** (`trackers/` + `notes/`) — always that name.
+5. **Chat** → if the agent can't write files, you get a copy-paste row + which file to paste it into.
+
+> [!note] **Web-only user (no local Obsidian, no skill folder)**
+> The AI saves **everything** there is to save straight into a workspace **folder literally named `deal-hunter`** in your web/cloud workspace (e.g. a Claude Project), split into two subfolders:
+> - `trackers/` → the tracker files + `my-deals.csv` + the restock ledger (`Household & Restock Tracker.md`)
+> - `notes/` → every individual product note (`<product>.md`)
+> That name is **fixed** — the AI never saves into any other folder, so you always know where your whole buying record lives. Just create the `deal-hunter` folder once (the AI will remind you), and it reuses it every hunt.
 
 Key config fields (`scripts/config.json`):
 
@@ -77,7 +86,8 @@ Key config fields (`scripts/config.json`):
 - `storage.fallback` — route when no MCP is available: `pc` (use `vault_paths`) or `workspace`
 - `storage.vault_paths` — per-machine absolute vault paths (e.g. `pc`)
 - `storage.mcp.tracker_dir` / `notes_dir` — vault-relative folders (defaults `Trackers` / `Journal`)
-- `storage.workspace.dir` — workspace path for the portable record
+- `storage.workspace.dir` — local CLI workspace root (the skill-internal `workspace/` default; overridable). Web-only always uses the fixed `deal-hunter` folder instead.
+- `restock_file` / `restock_csv` — restock ledger filename (default `Household & Restock Tracker.md`, lives in the tracker folder) and its portable CSV template (`restock.csv`).
 
 An explicit instruction (*"save this to X"*) always overrides the configured route. The skill ships with a placeholder path — `config.json` uses `<you>`; set `storage.vault_paths.pc` to your real path in the deployed/installed copy. Your real paths live only in your copy, never in the publicly shipped skill.
 
@@ -89,13 +99,14 @@ is this a good deal? <URL>
 compare these: <A> <B> <C> - which should I get?
 am I ready for <product> ~₹<price> on EMI? (my ceiling is ₹X/month)
 help me claim warranty on <product> - what's the escalation path?
+restock the <product> - I bought it last month, find me a deal for it
 what's the status of <product>? / where is my claim?
 ```
 
 ## Data & privacy
 
 - **Nothing leaves your machine.** The skill researches the open web; all *your* records are saved via the config-driven route (your vault trackers, the workspace, or `my-deals.csv`) — never into the skill's own files.
-- **`my-deals.csv`** is the portable record - a single merged file (deal + claim + EMI + repair, one row per purchase) that any AI can read back on a later session.
+- **`my-deals.csv`** is the portable record - a single merged file (deal + claim + EMI + repair + restock pointer, one row per purchase) that any AI can read back on a later session.
 - On platforms where the agent can't write files, it gives you a **copy-paste row** to drop into your file.
 - The skill's `scripts/config.json` ships with `<you>` placeholders — set `storage.vault_paths.pc` to your real vault path in your installed copy. Never write your real paths into the skill's own files.
 
@@ -105,7 +116,7 @@ what's the status of <product>? / where is my claim?
 deal-hunter/
 ├── SKILL.md          # the skill - frontmatter tells the agent when to use it
 ├── references/       # playbooks the agent loads on demand
-├── assets/           # read-only CSV templates (my-deals, deal-tracker, emi, repairs)
+├── assets/           # read-only CSV templates (my-deals, deal-tracker, emi, repairs, restock)
 ├── scripts/          # storage config (config.json) — set storage.vault_paths.pc
 ├── README.md         # this file - repo-facing only, not part of the skill
 └── .github/          # CI (validate + release)
@@ -115,7 +126,7 @@ deal-hunter/
 
 | File | Load when… |
 |---|---|
-| `prompt.md` | analyzing a specific shortlisted product (JOB 0-10 copy-paste prompt) |
+| `prompt.md` | analyzing a specific shortlisted product (JOB 0-11 copy-paste prompt) |
 | `india.md` | any India-market buy - platform map, sale calendar, scams |
 | `community.md` | verifying long-term ownership (Reddit-first, paid-plant detection) |
 | `finance.md` | any financed purchase - effective price, no-cost EMI reality, offer-stacking |
@@ -129,6 +140,7 @@ deal-hunter/
 | `companions.md` | every verdict - does the product need an essential companion? surface, don't auto-hunt |
 | `subscriptions.md` | subscription/recurring-spend questions |
 | `tracker.md` | recording a hunt result - schema, pipeline rule, watchlist |
+| `restock.md` | restock / rebuy / "bought this before" - benchmark the Product Master, no re-hunt |
 | `recall.md` | any "status of X / where is my claim?" - read the record, don't re-research |
 | `environment.md` | agent environment & storage - the config-driven save routes (MCP → local → workspace → chat) |
 | `examples.md` | seeing the pipeline in action - 8 worked examples (Buy now, Wait, Don't buy, Compare, Pay Smart flip, EMI flip, Quick Hunt, Market-shock flip) |
